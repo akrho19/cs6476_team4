@@ -18,8 +18,14 @@ def view_video(path):
             break
         # Our operations on the frame come here
         gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+
+        
+
         # Display the resulting frame
         cv.imshow('frame', gray)
+        
+        print(np.median(gray))
+
         if cv.waitKey(1) == ord('q'):
             break
     
@@ -29,4 +35,4 @@ def view_video(path):
 
 
 if __name__ == "__main__":
-    view_video('Segmentation_train\Training\Dataset1\Right_Instrument_Segmentation.avi')
+    view_video("Segmentation_test\\Dataset4\\Video.avi")
