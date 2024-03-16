@@ -192,12 +192,4 @@ def load_video(path):
 
     return video
 
-
-if __name__ == "__main__":
-
-    for frame, left, right in yield_tracking_data("Tracking_train"):
-        print(left)
-        if cv.waitKey(1) == ord('q'):
-            break
-    print("done :)")
     
