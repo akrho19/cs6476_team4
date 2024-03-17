@@ -9,7 +9,7 @@ def yield_tracking_data(path):
     '''
     A generator. Set up a for loop of the form 
 
-    for frame, left_truth, right_truth  in read_data("my\\path\\folder"):
+    for frame, left_truth, right_truth  in yield_tracking_data("my\\path\\folder"):
         # Do something
 
     path: the string path to the folder in which to search for videos
@@ -48,7 +48,7 @@ def yield_segmentation_data(path):
     '''
     A generator. Set up a for loop of the form 
 
-    for frame, left_truth, right_truth  in read_data("my\\path\\folder"):
+    for frame, left_truth, right_truth  in yield_segmentation_data("my\\path\\folder"):
         # Do something
 
     path: the string path to the folder in which to search for videos
@@ -102,7 +102,7 @@ def yield_video(path):
     '''
     A generator. Set up a for loop of the form 
 
-    for frame in read_data("my\\path\\video.avi"):
+    for frame in yield_video("my\\path\\video.avi"):
         # Do something
 
     path: the string path to the video
@@ -118,7 +118,7 @@ def yield_video(path):
     while True:
         ret, img = cap.read() # read one frame from the 'capture' object; img is (H, W, C)
         if ret:
-            img = cv.cvtColor(img, cv.COLOR_BGR2RGB)/255.0
+            img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
             yield img
         else:
             break
@@ -127,7 +127,7 @@ def yield_pose(path):
     '''
     A generator. Set up a for loop of the form 
 
-    for frame in read_data("my\\path\\pose.txt"):
+    for frame in yield_pose("my\\path\\pose.txt"):
         # Do something
 
     path: the string path to the txt file containing poses in csv format
@@ -143,7 +143,7 @@ def yield_videos(path):
     '''
     A generator. Set up a for loop of the form 
 
-    for frame in read_data("my\\path\\folder"):
+    for frame in yield_videos("my\\path\\folder"):
         # Do something
 
     path: the string path to the folder in which to search for videos
@@ -181,7 +181,7 @@ def load_video(path):
     while True:
         ret, img = cap.read() # read one frame from the 'capture' object; img is (H, W, C)
         if ret:
-            img = cv.cvtColor(img, cv.COLOR_BGR2RGB)/255.0
+            img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
             frames.append(img)
         else:
             break
