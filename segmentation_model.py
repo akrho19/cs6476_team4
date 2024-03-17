@@ -1,15 +1,28 @@
+'''
+In this file, write the code to segment an unseen image
+If there is a new model you would like to try, don't
+delete what's here; just add a new function in this file
+and change which function is called in main.py
+'''
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2 as cv
 import os
 import csv
 
-# Note: The ranges for HSV in opencv
-#(0–180, 0–255, 0–255)
 
-# Might be useful: https://docs.opencv.org/4.x/dd/d49/tutorial_py_contour_features.html
-
-def model_segmentation(frame):
+def model_segmentation_by_color(frame):
+    '''
+    Segments the image frame into left and right tools
+    Parameters:
+    frame: a dimensional nxmx3 uint8 numpy array, where the third dimension is RBG color
+        in the range 0-255
+    Returns:
+    left_guess: a nxmx1 binary numpy array. True values represent the pixel locations of
+        the left (or only) tool in the image. If there is no tool, all values are False
+    right_guess: a nxmx1 binary numpy array. True values represent the pixel locations 
+        of the right tool, if any. If there is no second tool, all values will be False.
+    '''
     # Note - probably DON'T resize the image
     # Unless you upscale it again at the end
     # Because the output needs to be the same size as the input
@@ -22,7 +35,9 @@ def model_segmentation(frame):
     # Convert to HSV
     frame = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
 
-    # # # Threshold based on red
+    # Threshold based on red
+    # Note: The ranges for HSV in opencv
+    # (0–180, 0–255, 0–255)
     low_H = 215/2
     high_H = 330/2
     low_S = 0*2.55
@@ -49,6 +64,7 @@ def model_segmentation(frame):
     frame = cv.dilate(frame, kernel, iterations=2)  
     # kernel = np.ones((5, 5), np.uint8)
     # frame = cv.dilate(frame, kernel, iterations=1) 
+    # Might be useful: https://docs.opencv.org/4.x/dd/d49/tutorial_py_contour_features.html
 
     # Keep the two biggest curves
     contours, hierarchy = cv.findContours(frame,cv.RETR_EXTERNAL,cv.CHAIN_APPROX_NONE )
