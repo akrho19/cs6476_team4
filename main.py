@@ -4,24 +4,30 @@ import cv2 as cv
 import os
 import csv
 from load_data import *
-from segmentation_model import *
 from segmentation_error import *
 from visualize_results import *
-from tracking_model import *
+
+import time # TODO remvoe
+
+from amber_segmentation_model import *
+from amber_tracking_model import *
+# TODO add the imports for your models here
 
 # Source data:
 # https://opencas.webarchiv.kit.edu/?q=node/30
 
 
-def main():
 
-    # Part One: Segmentation
 
+
+
+def segmentation(): 
     segmentation_train_folder = "Segmentation_train"
 
-    # TODO actually implement some training
+    # TODO actually implement some training if you want
+    # Maybe we save this for next time though
 
-    segmentation_test_folder = "Segmentation_test/Dataset3"
+    segmentation_test_folder = "Segmentation_train"
 
     errors = []
     for frame, left_truth, right_truth  in yield_segmentation_data(segmentation_test_folder):
@@ -33,7 +39,8 @@ def main():
         left_guess, right_guess =  model_segmentation_by_color(frame) 
 
         #Display the resulting frame
-        cv.imshow('frame', right_guess)
+        # or at least half of it
+        cv.imshow('frame', left_guess)
 
         if cv.waitKey(1) == ord('q'):
             break
@@ -50,8 +57,7 @@ def main():
     make_histograms(errors, labels)
 
 
-    # Part 2: Tracking
-
+def tracking():
     tracking_train_folder = "Tracking_train"
 
     # TODO train the model here
@@ -67,14 +73,35 @@ def main():
         left_error = (left_guess-left_truth) / left_truth
         errors.append(lefterror)
 
+        # Display annotated frame
+        annotated_frame = visualize_pose(frame, left_guess)
+        if right_truth is not None:
+            annotated_frame = visualize_pose(annotated_frame, right_guess)
+        annotated_frame = cv.cvtColor(annotated_frame, cv.COLOR_RGB2BGR)
+        cv.imshow('frame', annotated_frame)
+
+        if cv.waitKey(1) == ord('q'):
+            break
+
         if right_truth is not None:
             right_error = (right_guess-right_truth) / right_truth
             errors.append(right_error)
 
     # Report the overall accuracy
     errors = np.vstack(errors)
-    labels = ["I'm", "Not", "Actually", "Sure", "What", "These", "Represent"] # TODO figure out what the pose data actually is lol
+    labels = ["tracked_point_x", " tracked_point _y", "shaft_axis_x", "shaft_axis_y", \
+                "head_axis_x", "head_axis_y", "clasper_angle"]
     make_histograms(errors, labels)
+
+
+def main():
+
+    # Part One: Segmentation
+    #segmentation()
+
+    # Part 2: Tracking
+    # TODO: uncomment this if you want to test tracking
+    tracking()
 
 if __name__ == "__main__":
     main()
