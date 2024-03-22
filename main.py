@@ -17,10 +17,6 @@ from amber_tracking_model import *
 # https://opencas.webarchiv.kit.edu/?q=node/30
 
 
-
-
-
-
 def segmentation(): 
     segmentation_train_folder = "Segmentation_train"
 
@@ -71,7 +67,7 @@ def tracking():
         left_guess, right_guess = model_tracking_by_color(frame) # TODO make this model!
 
         left_error = (left_guess-left_truth) / left_truth
-        errors.append(lefterror)
+        errors.append(left_error)
 
         # Display annotated frame
         annotated_frame = visualize_pose(frame, left_guess)
