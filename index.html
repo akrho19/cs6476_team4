@@ -1,15 +1,105 @@
 <h1>Team 4 Project</h1>
-<subtitle>Christopher Barré | Nidhi Malhotra |Amber Rothe</subtitle>
+<subtitle>Christopher Barré | Nidhi Malhotra | Amber Rothe</subtitle>
 <hr>
 <h2>Introduction/Problem Definition</h2>
-<p>Provide a brief introduction to your project topic, and describe why it's an interesting topic to investigate. This is where you want to describe the problem itself and the motivation behind tackling it. 
-Note:  Please include 1-3 paragraphs for this section. Diagrams, visuals, and/or showing example data can be highly effective to aid in telling your story.
+<p>Provide a brief introduction to your project topic, and describe why it's an interesting topic to investigate. 
+  This is where you want to describe the problem itself and the motivation behind tackling it. 
+Note:  Please include 1-3 paragraphs for this section. Diagrams, visuals, and/or showing example data 
+can be highly effective to aid in telling your story.
+<br><br>
+Minimally invasive surgery often requires working in areas that are not visible to the surgeon. 
+There are multiple techniques for helping the surgeon visualize his or her surgical tools in relation 
+to the anatomy. X-Ray flouroscopy can be used; however, this exposes healthcare professionals to radiation. 
+Magnetic Resonance Imaging (MRI) is another option, but this has several shortcomings. It is expensive. It restricts the movement of the 
+surgeon, because the patient must be inside the bore of the MRI machine. Finally, no ferromagnetic surgical tools may be 
+used near an MRI machine. Another option is ultrasound imaging, but it typically has low resolution and requires an expert 
+sonographer to operate. 
+<br><br>
+As cameras have gotten smaller, it has become possible to put a small camera called an endoscope through the surgical aperature. 
+This camera gives the physician a real time view of his or her surgical tools without the drawbacks of other imaging modalities. 
+<br><br>
+Meanwhile, robotics has found its way into operating rooms. Commercially available platforms such as the DaVinci and Rosa robots 
+have already been used in surgery, and many new devices are under development. These robotic surgical tools give physicians greater
+dexterity and may even assist in path planning, compensate for the surgon's unwanted hand motion, or allow surgeons to conduct surgeries
+remotely. 
+<br><br>
+As minimally invasive surgeries incorporate more and more robotics, endoscope cameras have become an attractive option for closed-loop 
+control of surgical robots. It is possible to obtain the position and configuration of the surgical tool relative to the surrounding 
+tissue. This data can be used to update the robot's state model. However, the task is not without challenges. The image quality of endoscope 
+cameras tends to be poor and distorted, and stereo images are usually not available. 
 </p>
 
 <h2>Related Works</h2>
 <p>Describe related works in your problem space (research papers, libraries/tools, etc) for existing solutions for this problem or adjacent areas. Make sure to cite papers you reference! 
 ○	Note: Related work should have between 2 to 6 sentences for each work citing. Please cite works following IEEE guidelines. Organize related work into different subsections based on similarity of approaches.
 </p>
+<h3>General CV Techniques in Medical Imaging</h3>
+<p>
+[1] Choudhary, A. (n.d.). Guidewire detection and 3D-Reconstruction for image-guided surgery. https://anic46.github.io/data/Guidewire_Project.pdf
+</p>
+<blockquote>This report was written by a previous masters student in our own lab as part of a special projects class several years ago. It provides a good overview of the 
+  challenges and strategies related to identifying pose of guidewires under X-ray. To identify the guidewire, the author first applied distortion, isocenter correction, 
+  histogram equalization, and smoothing to correct the X-ray images. He then applied a large median filter to remove the thin guidewire from the image, while also 
+  keeping an unfiltered copy. Next, he applied DoG and B-COSFIRE based filters to detect vessels in both image. He thresholded the output to obtain one mask from each image, 
+  then subtracted the masks from each other to obtain a mask with only the guidewire. Finally, he used curvelinear structure detection to highlight ridge structures to refine 
+  the segmentation of the guidewire. While developing this procedure, the author also tried some other approaches, which were found to be suboptimal. He tried using Meijering 
+  neuriteness, Sato tubeness, Frangi vesselness and Hessian vesselness filters to identify the vessels. He also attempted to use SIFT to identify guidewire features and track 
+  it across multiple images.
+</blockquote>
+<h3>Segmentation of Tools from Endoscope Images</h3>
+<p>
+[2] C. Tomasini, I. Alonso, L. Riazuelo, and A. C. Murillo, “Efficient tool segmentation for endoscopic videos in the wild,” in Proceedings of The 5th 
+International Conference on Medical Imaging with Deep Learning, E. Konukoglu, B. Menze, A. Venkataraman, C. Baumgartner, Q. Dou, and S. Albarqouni, Eds., 
+in Proceedings of Machine Learning Research, vol. 172. PMLR, Feb. 2022, pp. 1218–1234. [Online]. Available: https://proceedings.mlr.press/v172/tomasini22a.html
+</p>
+<blockquote>
+This paper discusses segmenting tools in endoscope views, which is the first step for pose estimation. The paper mentions several techniques for segmenting endoscope tools, including 
+UNet and related models, MF-TAPNet, DMNet, MiniNet, and Binary frame classification.
+</blockquote>
+<h3>Tracking/Pose Estimation of Tools from Endoscope Images</h3>
+<p>
+[3] M. Yoshimura, M. M. Marinho, K. Harada and M. Mitsuishi, "Single-Shot Pose Estimation of Surgical Robot Instruments’ Shafts from Monocular Endoscopic Images," 2020 IEEE International Conference on 
+Robotics and Automation (ICRA), Paris, France, 2020, pp. 9960-9966, doi: 10.1109/ICRA40945.2020.9196779
+</p>
+<blockquote>
+This paper was able to estimate pose from a single monocular endoscope image using a modified SSD-6D 
+network. 
+</blockquote>
+<p>
+[4] Cabras P, Nageotte F, Zanne P, Doignon C. “An adaptive and fully automatic method for estimating 
+the 3D position of bendable instruments using endoscopic images.” Int J Med Robot. 2017 Dec;13(4). 
+doi: 10.1002/rcs.1812. Epub 2017 Apr 7. PMID: 28387448.
+</p>
+<blockquote>
+This paper also used a monocular camera. The authors leveraged colored markers 
+attatched to the corners of the instrument. In this paper, the instrument is segmented 
+using a graph-based method. The corners of markers are 
+extracted by detecting the color change. The features are used to estimate the 
+3D pose of the instrument using an adaptive model.  
+</blockquote>
+<p>
+[5] Chiu, Zih-Yun et al. “Real-Time Constrained 6D Object-Pose Tracking of An In-Hand 
+Suture Needle for Minimally Invasive Robotic Surgery.” 2023 IEEE International Conference 
+on Robotics and Automation (ICRA) (2022): 4761-4767.
+</p>
+<blockquote>
+In this paper the authors tract the 6D pose of an in-hand suture needle. The main contibution 
+of the work is including contraints such that the needle is in a feasible grasping 
+manifold of the gripper. The authors use a reparameterization by defining the pose of the 
+needle with respect to the end effector frame. This makes it easy to define the grasping constraints.
+A marker-less deep neural network is used for feature detection.
+</blockquote>
+<p>
+[6] R. Hao, O. Özgüner and M. C. Çavuşoğlu, "Vision-Based Surgical Tool Pose Estimation for the da Vinci® Robotic Surgical System," 
+2018 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Madrid, Spain, 2018, pp. 1298-1305, doi: 10.1109/IROS.2018.8594471.
+</p>
+<blockquote>
+The authors are able to identify the location of the tool visually in the camera frame and compare this with the expected view of the tool obtained from robot kinematics. 
+They are then able to use the difference in location to update their particle filter to perform Bayesian estimation. This paper uses stero cameras rather than a single view, 
+but the principles of what they are doing should be applicable to a single view as well, but our results might not be as good. Overall, this paper represents
+the "final step" and a stretch goal for our project: actually using the information obtained from images
+to control robot motion.  
+</blockquote>
 
 <h2>Methods/Approach</h2>
 <p>Indicate algorithms, methodologies, or approaches you used to craft your solution. What was the reasoning or intuition for trying each methodology/algorithm. What does the overall pipeline look like and the details behind each component? Make sure to establish any terminology or notation you will continue to use in this section. 
