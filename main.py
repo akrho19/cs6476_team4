@@ -7,8 +7,6 @@ from load_data import *
 from segmentation_error import *
 from visualize_results import *
 
-import time # TODO remvoe
-
 from amber_segmentation_model import *
 from amber_tracking_model import *
 # TODO add the imports for your models here
