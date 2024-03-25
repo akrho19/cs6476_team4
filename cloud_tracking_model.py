@@ -17,4 +17,9 @@ def model_tracking_by_blobs(frame):
     '''
     TODO: Cloud
     '''
+
+    ksize = 3
+
+
+
     return [1,1,1,1,1,1,1], [1,1,1,1,1,1,1]

@@ -7,8 +7,8 @@ from load_data import *
 from segmentation_error import *
 from visualize_results import *
 
-from nidhi_segmentation_model import *
-from amber_tracking_model import *
+from cloud_segmentation_model import *
+from cloud_tracking_model import *
 # TODO add the imports for your models here
 
 # Source data:
@@ -21,7 +21,7 @@ def segmentation():
     # TODO actually implement some training if you want
     # Maybe we save this for next time though
 
-    segmentation_test_folder = "Segmentation_train"
+    segmentation_test_folder = "Segmentation_test"
 
     errors = []
     for frame, left_truth, right_truth  in yield_segmentation_data(segmentation_test_folder):
@@ -30,7 +30,7 @@ def segmentation():
         # Write your model as its own function in the file segmetnation_model.py
         # Your model must return the same things, 
         # But may take in additional parameters such as weights calculated during training 
-        left_guess, right_guess =  model_segmentation_by_sift(frame) 
+        left_guess, right_guess =  model_segmentation_by_blobs(frame) 
 
         #Display the resulting frame
         # or at least half of it
