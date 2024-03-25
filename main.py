@@ -7,7 +7,7 @@ from load_data import *
 from segmentation_error import *
 from visualize_results import *
 
-from amber_segmentation_model import *
+from nidhi_segmentation_model import *
 from amber_tracking_model import *
 # TODO add the imports for your models here
 
@@ -30,7 +30,7 @@ def segmentation():
         # Write your model as its own function in the file segmetnation_model.py
         # Your model must return the same things, 
         # But may take in additional parameters such as weights calculated during training 
-        left_guess, right_guess =  model_segmentation_by_color(frame) 
+        left_guess, right_guess =  model_segmentation_by_sift(frame) 
 
         #Display the resulting frame
         # or at least half of it
@@ -62,7 +62,7 @@ def tracking():
     for frame, left_truth, right_truth  in yield_tracking_data(tracking_test_folder):
 
         # TODO test the model here        
-        left_guess, right_guess = model_tracking_by_color(frame) # TODO make this model!
+        left_guess, right_guess = model_tracking_by_sift(frame) # TODO make this model!
 
         left_error = (left_guess-left_truth) / left_truth
         errors.append(left_error)
@@ -91,11 +91,11 @@ def tracking():
 def main():
 
     # Part One: Segmentation
-    #segmentation()
+    segmentation()
 
     # Part 2: Tracking
     # TODO: uncomment this if you want to test tracking
-    tracking()
+    #tracking()
 
 if __name__ == "__main__":
     main()
