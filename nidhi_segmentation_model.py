@@ -29,11 +29,52 @@ def model_segmentation_by_sift(frame):
     # Because the output needs to be the same size as the input
   
     
+        # Blur only red 
+
+    hsv_image = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+    low_H = 215/2
+    high_H = 330/2
+    low_S = 0*2.55
+    high_S = 90*2.55
+    low_V = 0*2.55
+    high_V = 90*2.55
+    lower_bound = np.array([215/2, 0*2.55, 0*2.55])  # Lower bound for green in HSV
+    upper_bound = np.array([330/2, 90*2.55, 90*2.55])  # Upper bound for green in HSV
+
+    #lower_bound = np.array([100, 50, 50])  # Lower bound for blue in HSV
+    #upper_bound = np.array([130, 255, 255])
+
+    # Create a mask based on the color threshold
+    mask = cv.inRange(hsv_image, lower_bound, upper_bound)
+
+    # Apply the mask to the original image
+    masked_image = cv.bitwise_and(frame, frame, mask=mask)
+
+    # Apply a blur operation to the masked image
+    blurred_image = cv.GaussianBlur(masked_image, (51, 51), 0)
+
+    # Invert the mask
+    mask = cv.bitwise_not(mask)
+
+    # Apply the inverted mask to the original image
+    masked_background = cv.bitwise_and(frame, frame, mask=mask)
+
+    # Combine the original image and the blurred image
+    frame = cv.add(masked_background, blurred_image)
+    
+    # Sharpen image tool points
+    
     kernel = np.array([[-1,-1,-1], [-1,9,-1], [-1,-1,-1]])
     frame = cv.filter2D(frame, -1, kernel)
     
+    gamma=0.9
+    frame1=np.power(frame,gamma)
+    if frame1.dtype != 'uint8':
+        frame1 = cv.convertScaleAbs(frame1)
+    frame1 = cv.Canny(frame1, 600, 870)
     kernel_size = 21
-    #frame = cv.GaussianBlur(frame,(kernel_size,kernel_size),0)
+    frame = cv.GaussianBlur(frame,(kernel_size,kernel_size),0)
+    
     # Edges are weird. Get them out
     frame[0:15,:] = 0
     frame[-15:-1,:] = 0
@@ -42,11 +83,11 @@ def model_segmentation_by_sift(frame):
     # Dilate and erode
     
     kernel = np.ones((3, 3), np.uint8)
-    ##frame = cv.erode(frame, kernel, iterations=1)
+    frame = cv.erode(frame, kernel, iterations=1)
     kernel = np.ones((5, 5), np.uint8)
-    #frame = cv.dilate(frame, kernel, iterations=2)  
-        
-    gray_frame =  cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+    frame = cv.dilate(frame, kernel, iterations=2)  
+    gray_frame =  cv.cvtColor(frame, cv.COLOR_BGR2GRAY) 
+    
 
     # Initialize the SIFT detector
     sift = cv.SIFT_create()
@@ -61,9 +102,7 @@ def model_segmentation_by_sift(frame):
     for kp in keypoints:
         x, y = np.int32(kp.pt)
         size = np.int32(kp.size)
-        cv.circle(mask, (x, y), 5, 255, -1)
-
-        
+        cv.circle(mask, (x, y), 19, 255, -1)        
         kernel = np.ones((5, 5), np.uint8)
         mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel)
         segmented_img = cv.bitwise_and(frame, frame, mask=mask)
@@ -71,7 +110,6 @@ def model_segmentation_by_sift(frame):
     frame_with_keypoints = cv.drawKeypoints(frame, keypoints, None)
 
     cv.imshow('Video with SIFT Keypoints', frame_with_keypoints)
-
     frame = gray_frame
 
     # Keep the two biggest curves
