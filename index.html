@@ -3,11 +3,11 @@
 <hr>
 <h2>Introduction/Problem Definition</h2>
 <p>
-  Provide a brief introduction to your project topic, and describe why it's an interesting topic to investigate. 
+  <!-- Provide a brief introduction to your project topic, and describe why it's an interesting topic to investigate. 
   This is where you want to describe the problem itself and the motivation behind tackling it. 
   Note:  Please include 1-3 paragraphs for this section. Diagrams, visuals, and/or showing example data 
   can be highly effective to aid in telling your story.
-  <br><br>
+  <br><br> -->
   Minimally invasive surgery often requires working in areas that are not visible to the surgeon. 
   There are multiple techniques for helping the surgeon visualize his or her surgical tools in relation 
   to the anatomy. X-Ray flouroscopy can be used; however, this exposes healthcare professionals to radiation. 
@@ -31,10 +31,10 @@
 </p>
 
 <h2>Related Works</h2>
-<p>
+<!-- <p>
   Describe related works in your problem space (research papers, libraries/tools, etc) for existing solutions for this problem or adjacent areas. Make sure to cite papers you reference! 
   ○	Note: Related work should have between 2 to 6 sentences for each work citing. Please cite works following IEEE guidelines. Organize related work into different subsections based on similarity of approaches.
-</p>
+</p> -->
 <h3>General CV Techniques in Medical Imaging</h3>
   <p>
     [1] Choudhary, A. (n.d.). Guidewire detection and 3D-Reconstruction for image-guided surgery. https://anic46.github.io/data/Guidewire_Project.pdf
@@ -171,9 +171,9 @@ Medical Image Analysis, Volume 67, 2021.
   </p>
 
 <h2>Experiments / Results</h2>
-<p>Describe what you tried and what datasets were used. We aren’t expecting you to beat state of the art, but we are interested in you describing what worked or didn’t work and to give reasoning as to why you believe so. Compare your approach against baselines (either previously established or you established) in this section. Provide at least one qualitative result (i.e. a visual output of your system on an example image). 
+<!-- <p>Describe what you tried and what datasets were used. We aren’t expecting you to beat state of the art, but we are interested in you describing what worked or didn’t work and to give reasoning as to why you believe so. Compare your approach against baselines (either previously established or you established) in this section. Provide at least one qualitative result (i.e. a visual output of your system on an example image). 
 ○	Note: For the project update, feel free to discuss what worked and didn’t work. Why do you think an approach was (un)successful? We expect you to have dealt with dataset setup and completed at least 1 experimental result by the project update.
-</p>
+</p> -->
 <p>
   We used the <a href="https://opencas.webarchiv.kit.edu/?q=node/30">EndoVis 15 dataset,</a> which provides endoscope views of robotics tools. 
   It also provides ground truth data for both tracking and segmentation tasks. 
@@ -187,7 +187,7 @@ Medical Image Analysis, Volume 67, 2021.
     generalizable to other data sets where the lighting is different. In the future, perhaps these
     parameters could be chosen using learning. 
   </p>
-  <img src="color_segmentation_example.png" style="width:80%">
+  <img src="color_segmentation_example.png" style="width:50%">
   <br>
   <img src="color_segmentation_accuracy.png" style="width:50%">
 
@@ -200,12 +200,14 @@ Medical Image Analysis, Volume 67, 2021.
   <p>
     This algorithm works well for detecting the tool tip region in some cases but fails to detect the shaft of the tool. Need to combine with another approach for better results.
   </p>
-Example segmentation results
+  <p>
+  Example segmentation results
+  <br>
   <img src="sift_output.png" style="width:50%">
   <img src="sift_output2.png" style="width:50%">
   </p>
 
-<h3>Tracking</h3>
+<!-- <h3>Tracking</h3>
 
   <h4>Amber's Tracking Method</h4>
   <p>
@@ -220,12 +222,13 @@ Example segmentation results
   <h4>Nidhi's Tracking Method</h4>
   <p>
     write here
-  </p>
+  </p> -->
 
 <h2>What’s next</h2>
-<p>What is your plan until the final project due date? What methods and experiments do you plan on running? 
+<!-- <p>What is your plan until the final project due date? What methods and experiments do you plan on running? 
 ○	Note: Include a task list (can use a table) indicating each step you are planning and anticipated completion date. 
-  The next we would try combining classical approaches and learning based medthods.
+  The next we would try combining classical approaches and learning based medthods. -->
+<p>
   <li>Combine color segmentation with key features for tracking tool tip -  March 27 - April 2</li>
   
   <li>For segmentation 
@@ -249,9 +252,10 @@ Example segmentation results
 </p>
 
 <h2>Team member contributions</h2>
-<p>Indicate what you anticipate each team member will contribute by the final project submission.
+<!-- <p>
+  Indicate what you anticipate each team member will contribute by the final project submission.
 ○	Note: List every member name and their corresponding tasks in bullet points – or you may simply assign team member names to the task list you created above. 
-</p>
+</p> -->
 <ul>
   <li>Christopher Barré</li>
   <li>Nidhi Malhotra
