@@ -218,13 +218,25 @@ Example segmentation results
 ○	Note: Include a task list (can use a table) indicating each step you are planning and anticipated completion date. 
   The next we would try combining classical approaches and learning based medthods.
   <li>Combine color segmentation with key features for tracking tool tip -  March 27 - April 2</li>
-  <li>For segmentation </li>
+  
+  <li>For segmentation 
     <ul>
       <li> Setup pytorch environment - March 27 - April 2</li>
       <li> Try CNN for tool segmentation - April 3 - April 10 </li>
       <li> Use keypoints for as inputs to training model - April 3 - April 10 </li>  
       <li> Try endoder-decoder architectures - April 11 - April 18 </li>  
-    </ul>  
+    </ul> 
+    </li>
+ <li>For tracking 
+      <li> Try to implement LSTM for spatio temporal patterns of the instrument - April 11 - April 24 
+    <ul> 
+      <li> Use convolutional neural networks to extract visual features. </li>
+      <li> Use color histograms, or sift keypoints as features. </li>
+      <li> Can clip video to shorter frame length and randomly choose input from batch to reduce data size. </li>
+      <li> Output layer should give pose. </li>
+      <li> Use regularization to prevent overfitting. </li>
+    </ul> 
+   </li>
 </p>
 
 <h2>Team member contributions</h2>
