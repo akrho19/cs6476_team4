@@ -18,15 +18,15 @@
   <br><br>
   As cameras have gotten smaller, it has become possible to put a small camera called an endoscope through the surgical aperature. 
   This camera gives the physician a real time view of his or her surgical tools without the drawbacks of other imaging modalities. 
-  <br><br>
   Meanwhile, robotics has found its way into operating rooms. Commercially available platforms such as the DaVinci and Rosa robots 
   have already been used in surgery, and many new devices are under development. These robotic surgical tools give physicians greater
   dexterity and may even assist in path planning, compensate for the surgon's unwanted hand motion, or allow surgeons to conduct surgeries
   remotely. 
   <br><br>
-  As minimally invasive surgeries incorporate more and more robotics, endoscope cameras have become an attractive option for closed-loop 
-  control of surgical robots. It is possible to obtain the position and configuration of the surgical tool relative to the surrounding 
-  tissue. This data can be used to update the robot's state model. However, the task is not without challenges. The image quality of endoscope 
+  As minimally invasive surgeries incorporate more and more robotics, endoscope cameras have become an attractive option for providing imaging feedback to the surgeon.
+  Using this imaging feedback coupled with vision algorithms can help in surgical tool segmentation and tool tracking in the scene. 
+  By obtaining the position and configuration of the surgical tool relative to the surrounding 
+  tissue several surgical procedural parts can be semi-automated using closed-loop control. However, the task is not without challenges. The image quality of endoscope 
   cameras tends to be poor and distorted, and stereo images are usually not available. 
 </p>
 
@@ -131,9 +131,17 @@
     write here
   </p>
 
-  <h4>Nidhi's Segmentation Method</h4>
+  <h4>SIFT based segmentation</h4>
   <p>
-    write here
+    In this approach, we try to find keypoints in the scene for tool recognition. On the first attempt by finding keypoints using in-built sift function,
+    a large number of keypoints including - the tool tips, nerve regions and bright regions are recognized as key features. In this approach the tool tip is 
+    segmented in most cases but in the tool shaft region which is black no keypoints are detected.
+    Several pre-processing steps are attempted but all of them have drawbacks - initially bluring the image is attempted which leads to finding a relatively
+    smaller set of keypoints and give a blurred edge of the tool . By sharpening the image more keypoints are found
+    which give a good edge for the tool but several bright regions which are not the tool in the image are also detected.
+
+    We attempt on using some information from detecting the keypoints for obtaining a good tip detection of the tool while tracking the pose. For segmentation though,
+    this approach needs to be combined with another approach to get good results.
   </p>
 
 <h3>Tracking</h3>
@@ -179,9 +187,13 @@
     write here
   </p>
 
-  <h4>Nidhi's Segmentation Method</h4>
+  <h4>SIFT for segmentation</h4>
   <p>
-    write here
+    This algorithm works well for detecting the tool tip region in some cases but fails to detect the shaft of the tool. Need to combine with another approach for better results.
+  </p>
+Example segmentation results
+  <img src="sift_otput.png" style="width:80%">
+  <img src="sift_otput2.png" style="width:80%">
   </p>
 
 <h3>Tracking</h3>
