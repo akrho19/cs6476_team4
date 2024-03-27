@@ -3,11 +3,11 @@
 <hr>
 <h2>Introduction/Problem Definition</h2>
 <p>
-  Provide a brief introduction to your project topic, and describe why it's an interesting topic to investigate. 
+  <!-- Provide a brief introduction to your project topic, and describe why it's an interesting topic to investigate. 
   This is where you want to describe the problem itself and the motivation behind tackling it. 
   Note:  Please include 1-3 paragraphs for this section. Diagrams, visuals, and/or showing example data 
   can be highly effective to aid in telling your story.
-  <br><br>
+  <br><br> -->
   Minimally invasive surgery often requires working in areas that are not visible to the surgeon. 
   There are multiple techniques for helping the surgeon visualize his or her surgical tools in relation 
   to the anatomy. X-Ray flouroscopy can be used; however, this exposes healthcare professionals to radiation. 
@@ -18,23 +18,23 @@
   <br><br>
   As cameras have gotten smaller, it has become possible to put a small camera called an endoscope through the surgical aperature. 
   This camera gives the physician a real time view of his or her surgical tools without the drawbacks of other imaging modalities. 
-  <br><br>
   Meanwhile, robotics has found its way into operating rooms. Commercially available platforms such as the DaVinci and Rosa robots 
   have already been used in surgery, and many new devices are under development. These robotic surgical tools give physicians greater
   dexterity and may even assist in path planning, compensate for the surgon's unwanted hand motion, or allow surgeons to conduct surgeries
   remotely. 
   <br><br>
-  As minimally invasive surgeries incorporate more and more robotics, endoscope cameras have become an attractive option for closed-loop 
-  control of surgical robots. It is possible to obtain the position and configuration of the surgical tool relative to the surrounding 
-  tissue. This data can be used to update the robot's state model. However, the task is not without challenges. The image quality of endoscope 
+  As minimally invasive surgeries incorporate more and more robotics, endoscope cameras have become an attractive option for providing imaging feedback to the surgeon.
+  Using this imaging feedback coupled with vision algorithms can help in surgical tool segmentation and tool tracking in the scene. 
+  By obtaining the position and configuration of the surgical tool relative to the surrounding 
+  tissue several surgical procedural parts can be semi-automated using closed-loop control. However, the task is not without challenges. The image quality of endoscope 
   cameras tends to be poor and distorted, and stereo images are usually not available. 
 </p>
 
 <h2>Related Works</h2>
-<p>
+<!-- <p>
   Describe related works in your problem space (research papers, libraries/tools, etc) for existing solutions for this problem or adjacent areas. Make sure to cite papers you reference! 
   ○	Note: Related work should have between 2 to 6 sentences for each work citing. Please cite works following IEEE guidelines. Organize related work into different subsections based on similarity of approaches.
-</p>
+</p> -->
 <h3>General CV Techniques in Medical Imaging</h3>
   <p>
     [1] Choudhary, A. (n.d.). Guidewire detection and 3D-Reconstruction for image-guided surgery. https://anic46.github.io/data/Guidewire_Project.pdf
@@ -103,11 +103,20 @@
     the "final step" and a stretch goal for our project: actually using the information obtained from images
     to control robot motion.  
   </blockquote>
+ <p>
+    [7] Mobarakol Islam, Vibashan VS, Chwee Ming Lim, Hongliang Ren, ST-MTL: Spatio-Temporal multitask learning model to predict scanpath while tracking instruments in robotic surgery,
+Medical Image Analysis, Volume 67, 2021.
+  </p>
+  <blockquote>
+    The authors in this work propose an end-to-end trainable Spatio-Temporal Multi-Task Learning (ST-MTL) model for real-time surgical
+    instrument segmentation. A novel Asynchronous Spatio-Temporal Optimization (ASTO) to optimize the ST-MTL model is implemented
+    for shared-encoder and task-aware decoders.
+  </blockquote>
 
 <h2>Methods/Approach</h2>
-<p>Indicate algorithms, methodologies, or approaches you used to craft your solution. What was the reasoning or intuition for trying each methodology/algorithm. What does the overall pipeline look like and the details behind each component? Make sure to establish any terminology or notation you will continue to use in this section. 
+<!-- <p>Indicate algorithms, methodologies, or approaches you used to craft your solution. What was the reasoning or intuition for trying each methodology/algorithm. What does the overall pipeline look like and the details behind each component? Make sure to establish any terminology or notation you will continue to use in this section. 
 ○	Note: Your methods and approaches may change through development, so in your project update, feel free to discuss all approaches you tried out! We expect at least 1 method/approach attempted.
-</p>
+</p> -->
 
 <h3>Segmentation</h3>
 
@@ -138,9 +147,17 @@
     the segmentation.
   </p>
 
-  <h4>Nidhi's Segmentation Method</h4>
+  <h4>SIFT based segmentation</h4>
   <p>
-    write here
+    In this approach, we try to find keypoints in the scene for tool recognition. On the first attempt by finding keypoints using in-built sift function,
+    a large number of keypoints including - the tool tips, nerve regions and bright regions are recognized as key features. In this approach the tool tip is 
+    segmented in most cases but in the tool shaft region which is black no keypoints are detected.
+    Several pre-processing steps are attempted but all of them have drawbacks - initially bluring the image is attempted which leads to finding a relatively
+    smaller set of keypoints and give a blurred edge of the tool . By sharpening the image more keypoints are found
+    which give a good edge for the tool but several bright regions which are not the tool in the image are also detected.
+
+    We attempt on using some information from detecting the keypoints for obtaining a good tip detection of the tool while tracking the pose. For segmentation though,
+    this approach needs to be combined with another approach to get good results.
   </p>
 
 <h3>Tracking</h3>
@@ -161,9 +178,9 @@
   </p>
 
 <h2>Experiments / Results</h2>
-<p>Describe what you tried and what datasets were used. We aren’t expecting you to beat state of the art, but we are interested in you describing what worked or didn’t work and to give reasoning as to why you believe so. Compare your approach against baselines (either previously established or you established) in this section. Provide at least one qualitative result (i.e. a visual output of your system on an example image). 
+<!-- <p>Describe what you tried and what datasets were used. We aren’t expecting you to beat state of the art, but we are interested in you describing what worked or didn’t work and to give reasoning as to why you believe so. Compare your approach against baselines (either previously established or you established) in this section. Provide at least one qualitative result (i.e. a visual output of your system on an example image). 
 ○	Note: For the project update, feel free to discuss what worked and didn’t work. Why do you think an approach was (un)successful? We expect you to have dealt with dataset setup and completed at least 1 experimental result by the project update.
-</p>
+</p> -->
 <p>
   We used the <a href="https://opencas.webarchiv.kit.edu/?q=node/30">EndoVis 15 dataset,</a> which provides endoscope views of robotics tools. 
   It also provides ground truth data for both tracking and segmentation tasks. 
@@ -177,7 +194,7 @@
     generalizable to other data sets where the lighting is different. In the future, perhaps these
     parameters could be chosen using learning. 
   </p>
-  <img src="color_segmentation_example.png" style="width:80%">
+  <img src="color_segmentation_example.png" style="width:50%">
   <br>
   <img src="color_segmentation_accuracy.png" style="width:50%">
 
@@ -191,12 +208,24 @@
   </p>
   <img src="blob_failure_evidence.png" style="width:50%">
 
-  <h4>Nidhi's Segmentation Method</h4>
+  <h4>SIFT for segmentation</h4>
   <p>
-    write here
+    This algorithm works well for detecting the tool tip region in some cases but fails to detect the shaft of the tool. Need to combine with another approach for better results for segmentation. For tracking the features are matched well in different frames. 
+    We can use optical flow later to detect the features with move withing frames for tracking.
+  </p>
+  <p>
+  Example segmentation results
+  <br>
+  <img src="sift_output.png" style="width:50%">
+  <img src="sift_output2.png" style="width:50%">
+  </p>
+  <p>
+    Keypoint matches - can be further integrated with optical flow for tracking
+    <br>
+    <img src="keypoints_matched.png" style="width:50%">
   </p>
 
-<h3>Tracking</h3>
+<!-- <h3>Tracking</h3>
 
   <h4>Amber's Tracking Method</h4>
   <p>
@@ -211,17 +240,41 @@
   <h4>Nidhi's Tracking Method</h4>
   <p>
     write here
-  </p>
+  </p> -->
 
 <h2>What’s next</h2>
-<p>What is your plan until the final project due date? What methods and experiments do you plan on running? 
+<!-- <p>What is your plan until the final project due date? What methods and experiments do you plan on running? 
 ○	Note: Include a task list (can use a table) indicating each step you are planning and anticipated completion date. 
+  The next we would try combining classical approaches and learning based medthods. -->
+<p>
+  <li>Combine color segmentation with key features for tracking tool tip -  March 27 - April 2</li>
+  
+  <li>For segmentation 
+    <ul>
+      <li> Setup pytorch environment - March 27 - April 2</li>
+      <li> Try CNN for tool segmentation - April 3 - April 10 </li>
+      <li> Use keypoints for as inputs to training model - April 3 - April 10 </li>  
+      <li> Try endoder-decoder architectures - April 11 - April 18 </li>  
+    </ul> 
+    </li>
+ <li>For tracking 
+      <li> Try to implement optical flow for SIFT feature points to detect motion and track the pose of the instrument - April 1 - April 7
+      <li> Try to implement LSTM for spatio temporal patterns of the instrument - April 11 - April 24 
+      <ul> 
+        <li> Use convolutional neural networks to extract visual features. </li>
+        <li> Use color histograms, or sift keypoints as features. </li>
+        <li> Can clip video to shorter frame length and randomly choose input from batch to reduce data size. </li>
+        <li> Output layer should give pose. </li>
+        <li> Use regularization to prevent overfitting. </li>
+      </ul> 
+   </li>
 </p>
 
 <h2>Team member contributions</h2>
-<p>Indicate what you anticipate each team member will contribute by the final project submission.
+<!-- <p>
+  Indicate what you anticipate each team member will contribute by the final project submission.
 ○	Note: List every member name and their corresponding tasks in bullet points – or you may simply assign team member names to the task list you created above. 
-</p>
+</p> -->
 <ul>
   <li>Christopher Barré</li>
     <ul>
@@ -231,6 +284,14 @@
       <li>TODO: Experiment with a learning approach</li>
     </ul>
   <li>Nidhi Malhotra</li>
+  <li>Nidhi Malhotra
+    <ul>
+      <li>Experiment with SIFT for segmentation</li>
+      <li> TODO: Experiment with optical flow of SIFT features for pose estimation</li>
+      <li>TODO: experiment with a tracking approach</li>
+      <li>TODO: Experiment with a learning approach</li>
+    </ul>
+  </li>
   <li>Amber Rothe
     <ul>
       <li>Set up repository</li>
