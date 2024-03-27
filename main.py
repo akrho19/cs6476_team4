@@ -31,6 +31,19 @@ def segmentation():
         # Your model must return the same things, 
         # But may take in additional parameters such as weights calculated during training 
         left_guess, right_guess =  model_segmentation_by_blobs(frame) 
+        #keypoints, descriptors, segmented_img, left_guess, right_guess = model_segmentation_by_sift(frame)
+        #prev_frame = frame
+        #prev_keypoints = keypoints
+        #prev_descriptors = descriptors
+        #matches = match_features(prev_descriptors, descriptors)
+
+        #matched_img = cv.drawMatches(prev_frame, prev_keypoints, frame, keypoints, matches, None, flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+        
+        
+
+        #Display the resulting frame
+        # or at least half of it
+        #cv.imshow('frame', matched_img)
 
         #Display the resulting frame
         # or at least half of it
