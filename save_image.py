@@ -6,7 +6,7 @@ import csv
 from load_data import *
 from segmentation_error import *
 from visualize_results import *
-from amber_segmentation_model import *
+from cloud_segmentation_model import *
 from amber_tracking_model import *
 
 '''
@@ -20,7 +20,7 @@ segmentation_test_folder = "Segmentation_test\Dataset3"
 for frame, left_truth, right_truth in yield_segmentation_data(segmentation_test_folder):
     print("Saving image")
 
-    left_guess, right_guess =  model_segmentation_by_color(frame) 
+    left_guess, right_guess =  model_segmentation_by_blobs(frame) 
 
     figure = plt.figure()
     plt.subplot(1,3,1)
@@ -33,6 +33,6 @@ for frame, left_truth, right_truth in yield_segmentation_data(segmentation_test_
     plt.imshow(left_guess, cmap='gray')
     plt.title("Algorithm Output")
     
-    plt.savefig("color_segmentation_example.png")
+    plt.savefig("blob_segmentation_sigma_151.png")
 
     break

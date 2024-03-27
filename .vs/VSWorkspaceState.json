@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Segmentation_train",
+    "\\Segmentation_train\\Training",
+    "\\Tracking_train",
+    "\\Tracking_train\\Training"
   ],
-  "SelectedNode": "\\C:\\Users\\m852s\\Source\\Repos\\akrho19\\cs6476_team4",
+  "SelectedNode": "\\index.html",
   "PreviewInSolutionExplorer": false
 }

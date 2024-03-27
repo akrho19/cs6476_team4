@@ -126,9 +126,16 @@
     "true" areas were discarded. 
   </p>
 
-  <h4>Cloud's Segmentation Method</h4>
+  <h4>Blob Detection Based Segmentation Method</h4>
   <p>
-    write here
+    We also thought that a blob detection algorithm for identifying circle-like regions could
+    be used to segment the different pieces of the tooltip.  A difference of Gaussians filter
+    was used to approximate the Laplacian of Gaussian and was applied to the RGB image, after
+    which the results were averaged together into grayscale.  With a kernel size similar to the
+    size of the tooltip in the frame, identifying regions with the maximum response for the
+    difference of Gaussians filter should point to the regions containing the tooltip.  This
+    kernel size can be identified by a least squares optimization that minimizes the error for
+    the segmentation.
   </p>
 
   <h4>Nidhi's Segmentation Method</h4>
@@ -143,10 +150,10 @@
     write here
   </p>
 
-  <h4>Cloud's Tracking Method</h4>
+  <!--<h4>Cloud's Tracking Method</h4>
   <p>
     write here
-  </p>
+  </p>-->
 
   <h4>Nidhi's Tracking Method</h4>
   <p>
@@ -174,10 +181,15 @@
   <br>
   <img src="color_segmentation_accuracy.png" style="width:50%">
 
-  <h4>Cloud's Segmentation Method</h4>
+  <h4>Blob Detection Based Segmentation Method</h4>
   <p>
-    write here
+      The use of the blob detection algorithm for identifying circle-like features in the image frames
+      did not work very well at all. Because of the the large blob size, it was necessary to use a
+      difference of Gaussians instead of the preferred Laplacian of Guassian.  For a broad range of kernel
+      sizes, the peak regions from this filter are spread haphazardly amongst the tooltip, shaft, and tissue, as shown below.
+      Even with using learning to identify an optimal kernel size, the usefulness of this method seems unlikely.
   </p>
+  <img src="blob_failure_evidence.png" style="width:50%">
 
   <h4>Nidhi's Segmentation Method</h4>
   <p>
@@ -191,10 +203,10 @@
     write here
   </p>
 
-  <h4>Cloud's Tracking Method</h4>
+  <!--<h4>Cloud's Tracking Method</h4>
   <p>
     write here
-  </p>
+  </p>-->
 
   <h4>Nidhi's Tracking Method</h4>
   <p>
@@ -212,6 +224,12 @@
 </p>
 <ul>
   <li>Christopher Barré</li>
+    <ul>
+      <li>Experiment with blob-detection based segmentation</li>
+      <li>TODO: write utility code for optimizing hyperparameters</li>
+      <li>TODO: experiment with a tracking approach</li>
+      <li>TODO: Experiment with a learning approach</li>
+    </ul>
   <li>Nidhi Malhotra</li>
   <li>Amber Rothe
     <ul>
