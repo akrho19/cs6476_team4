@@ -198,13 +198,19 @@ Medical Image Analysis, Volume 67, 2021.
 
   <h4>SIFT for segmentation</h4>
   <p>
-    This algorithm works well for detecting the tool tip region in some cases but fails to detect the shaft of the tool. Need to combine with another approach for better results.
+    This algorithm works well for detecting the tool tip region in some cases but fails to detect the shaft of the tool. Need to combine with another approach for better results for segmentation. For tracking the features are matched well in different frames. 
+    We can use optical flow later to detect the features with move withing frames for tracking.
   </p>
   <p>
   Example segmentation results
   <br>
   <img src="sift_output.png" style="width:50%">
   <img src="sift_output2.png" style="width:50%">
+  </p>
+  <p>
+    Keypoint matches - can be further integrated with optical flow for tracking
+    <br>
+    <img src="keypoints_matched.png" style="width:50%">
   </p>
 
 <!-- <h3>Tracking</h3>
@@ -240,6 +246,7 @@ Medical Image Analysis, Volume 67, 2021.
     </ul> 
     </li>
  <li>For tracking 
+      <li> Try to implement optical flow for SIFT feature points to detect motion and track the pose of the instrument - April 1 - April 7
       <li> Try to implement LSTM for spatio temporal patterns of the instrument - April 11 - April 24 
       <ul> 
         <li> Use convolutional neural networks to extract visual features. </li>
@@ -261,6 +268,7 @@ Medical Image Analysis, Volume 67, 2021.
   <li>Nidhi Malhotra
     <ul>
       <li>Experiment with SIFT for segmentation</li>
+      <li> TODO: Experiment with optical flow of SIFT features for pose estimation</li>
       <li>TODO: experiment with a tracking approach</li>
       <li>TODO: Experiment with a learning approach</li>
     </ul>
