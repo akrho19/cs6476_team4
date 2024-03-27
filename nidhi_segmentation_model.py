@@ -156,3 +156,19 @@ def model_segmentation_by_sift(frame):
     
     return left_guess, right_guess
 
+def match_features(descriptors1, descriptors2):
+    bf = cv.BFMatcher()
+    matches = bf.knnMatch(descriptors1, descriptors2, k=2)
+    good_matches = []
+    for m, n in matches:
+        if m.distance < 0.75 * n.distance:
+            good_matches.append(m)
+    return good_matches
+
+def segment_instrument(img, keypoints):
+    mask = np.zeros_like(img)
+    pts = np.array([kp.pt for kp in keypoints], dtype=np.int32)
+    cv.fillPoly(mask, [pts], (255, 255, 255))
+    segmented = cv.bitwise_and(img, mask)
+    return segmented
+
