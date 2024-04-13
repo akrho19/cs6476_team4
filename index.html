@@ -160,11 +160,24 @@ Medical Image Analysis, Volume 67, 2021.
     this approach needs to be combined with another approach to get good results.
   </p>
 
-<!-- <h3>Tracking</h3>
+<h3>Tracking</h3>
 
-  <h4>Amber's Tracking Method</h4>
+  <h4>Color Based Tracking Method</h4>
   <p>
-    write here
+    An attempt was made to recover six of the seven tracking values using only traditional CV methods (without learning.) The following algorithms were used to recover each item. 
+    <ul>
+      <li>tracked_point_x and tracked_point_y: The location of the "tracked point" is the point where the dark colored shaft and the light colored 
+        head meet. The image was first segmented to recover the whole tool and the head alone. The head was subtracted from the whole tool to obtain the shaft alone. 
+        Then, morphological dilation was used on the shaft mask. Next, a logical AND was applied to find the overlap between the shaft and the head. Finally, the 
+        centroid of this overlap region was found. The centroid became our approximation for the tracked point. </li>
+      <li>shaft_axis_x, shaft_axis_y:  These values represent a cartesian unit vector indicating the orientation of the tool shaft. The image was first segmented to recover 
+        the whole tool and the head alone. The head was subtracted from the whole tool to obtain the shaft alone. Root mean square was used to find the line that best fit
+      the shaft mask. The slope of this line was used to compute the values of the unit vector (shaft_axis_x, shaft_axis_y) </li>
+      <li>head_axis_x, head_axis_y:  These values represent a cartesian unit vector indicating the orientation of the tool head. The image was first segmented to recover 
+        the the head alone. Root mean square was used to find the line that best fit
+      the head mask. The slope of this line was used to compute the values of the unit vector (head_axis_x, head_axis_y)</li>
+      <li>clasper_angle: Reconstructing this value was not attempted using this method.</li>
+    </ul>
   </p>
 
 <h4>Cloud's Tracking Method</h4>
@@ -175,7 +188,7 @@ Medical Image Analysis, Volume 67, 2021.
   <h4>Nidhi's Tracking Method</h4>
   <p>
     write here
-  </p> -->
+  </p>
 
 <h2>Experiments / Results</h2>
 <!-- <p>Describe what you tried and what datasets were used. We aren’t expecting you to beat state of the art, but we are interested in you describing what worked or didn’t work and to give reasoning as to why you believe so. Compare your approach against baselines (either previously established or you established) in this section. Provide at least one qualitative result (i.e. a visual output of your system on an example image). 
@@ -192,11 +205,13 @@ Medical Image Analysis, Volume 67, 2021.
     However, it does have some
     shortcomings. The threshold for what is considered "red" was chosen manually and may not be 
     generalizable to other data sets where the lighting is different. In the future, perhaps these
-    parameters could be chosen using learning. 
+    parameters could be chosen using learning.
+    <br>
+    Overall, we acheived an average IoU of 53.8% with this algorithm. 
   </p>
   <img src="color_segmentation_example.png" style="width:50%">
   <br>
-  <img src="color_segmentation_accuracy.png" style="width:50%">
+  <img src="color_segmentation_iou.png" style="width:50%">
 
   <h4>Blob Detection Based Segmentation Method</h4>
   <p>
@@ -225,11 +240,27 @@ Medical Image Analysis, Volume 67, 2021.
     <img src="keypoints_matched.png" style="width:50%">
   </p>
 
-<!-- <h3>Tracking</h3>
+<h3>Tracking</h3>
 
-  <h4>Amber's Tracking Method</h4>
+  <h4>Color Based Tracking Method</h4>
   <p>
-    write here
+    The average errors, in pixels, were:
+    <ul>
+      <li>tracked_point_x Average: -191.366304</li>
+      <li>tracked_point _y Average: 66.820536</li>
+      <li>shaft_axis_x Average: -0.029694</li>
+      <li>shaft_axis_y Average: -0.041825</li>
+      <li>head_axis_x Average: -0.276321</li>
+      <li>head_axis_y Average: 0.111984</li>
+    </ul>
+
+    <br>
+    <img src="color_tracking_histograms.png" style="width:50%">
+    
+    Finding the grasper angle was not attempted using this method. 
+
+    Overall, this method performed very well for finding the orientation of the shaft. However, it did not perform well for finding the "tracked point". 
+    
   </p>
 
 <h4>Cloud's Tracking Method</h4>
@@ -240,7 +271,7 @@ Medical Image Analysis, Volume 67, 2021.
   <h4>Nidhi's Tracking Method</h4>
   <p>
     write here
-  </p> -->
+  </p>
 
 <h2>What’s next</h2>
 <!-- <p>What is your plan until the final project due date? What methods and experiments do you plan on running? 

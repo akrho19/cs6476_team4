@@ -65,50 +65,9 @@ def model_segmentation_by_color(frame):
     # frame = cv.dilate(frame, kernel, iterations=1) 
     # Might be useful: https://docs.opencv.org/4.x/dd/d49/tutorial_py_contour_features.html
 
-    # Keep the two biggest curves
-    contours, hierarchy = cv.findContours(frame,cv.RETR_EXTERNAL,cv.CHAIN_APPROX_NONE )
+    return get_largest_blobs(frame, second=True)
 
-    min_contour = 2000
-    maxContour = 0
-    secondContour = 0
-    maxContourData = None
-    secondContourData = None
-    for contour in contours:
-        contourSize = cv.contourArea(contour)
-        if contourSize > secondContour and contourSize > min_contour:
-            if contourSize > maxContour:
-                secondContour = maxContour
-                secondContourData = maxContourData
-                maxContour = contourSize
-                maxContourData = contour
-            else:
-                secondContour = contourSize
-                secondContourData = contour
-    
-    # Create a mask from the largest contours
-    left_guess = np.zeros(frame.shape, np.uint8)
-    right_guess = np.zeros(frame.shape, np.uint8)
-    if secondContour > 0:
-        # Find which is right and left
-        M_first = cv.moments(maxContourData)
-        cX_first = int(M_first["m10"] / M_first["m00"])
-
-        M_second = cv.moments(secondContourData)
-        cX_second = int(M_second["m10"] / M_second["m00"])
-
-        if cX_second > cX_first: # first is left
-            cv.drawContours(left_guess, [maxContourData], -1, 255, cv.FILLED)
-            cv.drawContours(right_guess, [secondContourData], -1, 255, cv.FILLED)
-        else: # first is right
-            cv.drawContours(left_guess, [secondContourData], -1, 255, cv.FILLED)
-            cv.drawContours(right_guess, [maxContourData], -1, 255, cv.FILLED)
-    elif maxContour > 0:
-        cv.drawContours(left_guess, [maxContourData], -1, 255, cv.FILLED)
-
-    return left_guess, right_guess
-    
-
-def model_segmentation_by_color(frame):
+def head_segmentation_by_color(frame):
     '''
     Segments the image frame into left and right tools
     Parameters:
@@ -135,13 +94,13 @@ def model_segmentation_by_color(frame):
     # Threshold based on red
     # Note: The ranges for HSV in opencv
     # (0–180, 0–255, 0–255)
-    low_H = 215/2
-    high_H = 330/2
+    low_H = 0/2
+    high_H = 360/2
     low_S = 0*2.55
-    high_S = 90*2.55
-    low_V = 0*2.55
-    high_V = 90*2.55
-    frame = cv.bitwise_not(cv.inRange(frame, (low_H, low_S, low_V), (high_H, high_S, high_V)))
+    high_S = 30*2.55
+    low_V = 50*2.55
+    high_V = 100*2.55
+    frame = cv.inRange(frame, (low_H, low_S, low_V), (high_H, high_S, high_V))
 
     # Edges are weird. Get them out
     frame[0:15,:] = 0
@@ -163,6 +122,13 @@ def model_segmentation_by_color(frame):
     # frame = cv.dilate(frame, kernel, iterations=1) 
     # Might be useful: https://docs.opencv.org/4.x/dd/d49/tutorial_py_contour_features.html
 
+    return get_largest_blobs(frame, second=True)
+
+def get_largest_blobs(frame, second=True):
+    '''
+    Helper function that returns the largest one or 2 blobs in image
+    '''
+
     # Keep the two biggest curves
     contours, hierarchy = cv.findContours(frame,cv.RETR_EXTERNAL,cv.CHAIN_APPROX_NONE )
 
@@ -182,11 +148,10 @@ def model_segmentation_by_color(frame):
             else:
                 secondContour = contourSize
                 secondContourData = contour
-    
-    # Create a mask from the largest contours
+
     left_guess = np.zeros(frame.shape, np.uint8)
     right_guess = np.zeros(frame.shape, np.uint8)
-    if secondContour > 0:
+    if secondContour > 0 and second:
         # Find which is right and left
         M_first = cv.moments(maxContourData)
         cX_first = int(M_first["m10"] / M_first["m00"])

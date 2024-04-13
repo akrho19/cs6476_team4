@@ -109,7 +109,7 @@ def model_segmentation_by_sift(frame):
 
     frame_with_keypoints = cv.drawKeypoints(frame, keypoints, None)
 
-    cv.imshow('Video with SIFT Keypoints', frame_with_keypoints)
+    # cv.imshow('Video with SIFT Keypoints', frame_with_keypoints) # TODO uncomment
     frame = gray_frame
 
     # Keep the two biggest curves

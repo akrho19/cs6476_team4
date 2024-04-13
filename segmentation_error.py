@@ -19,3 +19,13 @@ def get_segmentation_error(truth, guess):
     false_negative= np.sum(np.logical_and(truth, np.logical_not(guess)))/positive_count
 
     return [true_positive, false_positive, false_negative, true_negative]
+
+
+def get_intersection_over_union(truth, guess):
+    truth = np.any(truth, axis=2)
+
+    union = np.logical_or(truth, guess)
+    intersection = np.logical_and(truth, guess)
+
+    return np.sum(intersection)/np.sum(union)
+

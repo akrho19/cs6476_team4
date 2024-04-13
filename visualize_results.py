@@ -18,7 +18,7 @@ YELLOW = (255, 255, 0)
 
 VECTOR_LENGTH = 60
 
-def make_histograms(data, labels, xlabel="Rate", ylabel="Count", xlim=[0,1], n_bins=20):
+def make_histograms(data, labels, xlabel="Rate", ylabel="Count", xlim=None, n_bins=20):
     '''
     Makes a figure with a histogram subplot for each column in data.
     Parameters:
@@ -26,16 +26,16 @@ def make_histograms(data, labels, xlabel="Rate", ylabel="Count", xlim=[0,1], n_b
     labels: A list of n strings, the titles for each plot
     xlabel: the x axis label to be used for all subplots. Default is "Rate"
     ylabel: the y axis label to be used for all plots. Default is "Count"
-    xlim: A list of length 2 with the lower and upper bound of the x axis. Default [0,1].
+    xlim: A list of length 2 with the lower and upper bound of the x axis.
     n_bins: Number of histogram bins to use, default 20.
     returns: None
     '''
 
     figure = plt.figure()
-    for i in range(0,data.shape[1]):
+    for i in range(0,len(labels)):
         print(labels[i] + " Average: %f" % np.mean(data[:,i]))
         plt.subplot(2, -(data.shape[1]//-2), i+1)
-        plt.hist(data[:,i], bins=n_bins, range=(0,1))
+        plt.hist(data[:,i], bins=n_bins, range=xlim)
         plt.xlim(xlim)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
