@@ -27,20 +27,18 @@ class TrackNet(nn.Module):
         #self.fc_layers.append(nn.Dropout(p=0.5))
         self.fc_layers.append(nn.Linear(420,84))
         #self.fc_layers.append(nn.Dropout(p=0.5))
-        self.fc_layers.append(nn.Linear(84,17))
-        #self.fc_layers.append(nn.Dropout(p=0.5))
-        self.fc_layers.append(nn.Linear(17,6))
+        self.fc_layers.append(nn.Linear(84,12))
 
         self.loss_criterion = nn.MSELoss(reduction='mean')
 
-    def make_2D_block(in_planes,out_planes,kernel):
+    def make_2D_block(in_planes, out_planes, kernel):
         return nn.Sequential(
                 nn.Conv2d(in_planes,out_planes,kernel),
                 nn.MaxPool2d((3,3)),
                 nn.ReLU()
         )
 
-    def forward(self, x: torch.tensor) -> torch.tensor:
+    def forward(self, x: torch.tensor):
         """
         Perform the forward pass with the net
 

@@ -14,13 +14,17 @@ import csv
 import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
+import torch.optim as optim
 from torchvision.io import read_video
 #from PIL import Image
 from sklearn.preprocessing import StandardScaler
 from ML_tracking_net import TrackNet
+from loss import compute_loss
+from trainer import Trainer
+from load_data import *
 #import glob
 
-def compute_mean_and_std(dir_name: str) -> Tuple[np.ndarray, np.array]:
+def compute_mean_and_std(dir_name: str):
     scaler = StandardScaler()
     for frame, _, _ in yield_segmentation_data(dir_name):
     #paths = glob.glob(dir_name+"/*/*/Video.avi")
@@ -32,11 +36,7 @@ def compute_mean_and_std(dir_name: str) -> Tuple[np.ndarray, np.array]:
     std = np.sqrt(scaler.var_)
     return mean, std
 
-def compute_loss():
-
-    return
-
-def fundamental_transforms(inp_size: Tuple[int, int], pixel_mean: np.array, pixel_std: np.array) -> transforms.Compose:
+def get_fundamental_transforms(inp_size: tuple, pixel_mean: np.array, pixel_std: np.array):
         return transforms.Compose(
         [
             transforms.Resize(size=inp_size,antialias=True),
@@ -46,10 +46,51 @@ def fundamental_transforms(inp_size: Tuple[int, int], pixel_mean: np.array, pixe
         ]
     )
 
+def get_optimizer(model: torch.nn.Module, config: dict) -> torch.optim.Optimizer:
+    """
+    Returns the optimizer initializer according to the config on the model.
+
+    Args:
+    - model: the model to optimize for
+    - config: a dictionary containing parameters for the config
+    Returns:
+    - optimizer: the optimizer
+    """
+
+    optimizer_type = config["optimizer_type"]
+    learning_rate = config["lr"]
+    weight_decay = config["weight_decay"]
+
+    if optimizer_type == "adam":
+        optimizer = torch.optim.Adam(model.parameters(),lr=learning_rate,weight_decay=weight_decay)
+    elif optimizer_type == "sgd":
+        optimizer = torch.optim.SGD(model.parameters(),lr=learning_rate,weight_decay=weight_decay)
+    else:
+        optimizer = torch.optim.SGD(model.parameters(),lr=learning_rate,weight_decay=weight_decay)
+
+    return optimizer
+
+def training():
+    mean, std = compute_mean_and_std("Tracking_train")
+    model = TrackNet()
+    optimizer_config = {"optimizer_type":"adam", "lr":3e-3, "weight_decay":2e-3}
+    optimizer = get_optimizer(model, optimizer_config)
+    fundamental_transforms = get_fundamental_transforms((576,720),mean,std)
+    model_base_path = '../model_checkpoints/'
+
+    trainer_instance = Trainer(data_dir="Tracking_train", 
+                  model = model,
+                  optimizer = optimizer,
+                  model_dir = os.path.join(model_base_path, 'tracking_net'),
+                  train_data_transforms = fundamental_transforms,
+                  test_data_transforms = fundamental_transforms,
+                  batch_size = 32,
+                  load_from_disk = False,
+                  cuda = True,
+                 )
+
 def model_tracking_by_ML(frame):
 
-    model = TrackNet()
-
-
+    
 
     return [1,1,1,1,1,1,1], [1,1,1,1,1,1,1]

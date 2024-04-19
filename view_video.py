@@ -31,4 +31,4 @@ def view_video(path):
 
 
 if __name__ == "__main__":
-    view_video("Tracking_test\\Dataset4\\Video.avi")
+    view_video("Tracking_test\\Dataset6\\Video.avi")
