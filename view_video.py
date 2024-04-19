@@ -11,7 +11,7 @@ def view_video(path):
     while True:
         # Capture frame-by-frame
         ret, frame = cap.read()
-        print(np.shape(frame))
+
         # if frame is read correctly ret is True
         if not ret:
             print("Can't receive frame (stream end?). Exiting ...")
