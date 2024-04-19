@@ -10,7 +10,7 @@ import cv2 as cv
 import os
 import csv
 
-def model_segmentation_by_color(frame,params):
+def model_segmentation_by_color_trainable(frame,params):
     '''
     Segments the image frame into left and right tools
     Parameters:
@@ -65,9 +65,9 @@ def model_segmentation_by_color(frame,params):
     # frame = cv.dilate(frame, kernel, iterations=1) 
     # Might be useful: https://docs.opencv.org/4.x/dd/d49/tutorial_py_contour_features.html
 
-    return get_largest_blobs(frame, second=True)
+    return get_largest_Blobs(frame, second=True)
 
-def head_segmentation_by_color(frame,params):
+def head_segmentation_by_color_trainable(frame,params):
     '''
     Segments the image frame into left and right tools
     Parameters:
@@ -122,9 +122,9 @@ def head_segmentation_by_color(frame,params):
     # frame = cv.dilate(frame, kernel, iterations=1) 
     # Might be useful: https://docs.opencv.org/4.x/dd/d49/tutorial_py_contour_features.html
 
-    return get_largest_blobs(frame, second=True)
+    return get_largest_Blobs(frame, second=True)
 
-def get_largest_blobs(frame, second=True):
+def get_largest_Blobs(frame, second=True):
     '''
     Helper function that returns the largest one or 2 blobs in image
     '''
