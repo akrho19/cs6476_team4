@@ -7,8 +7,7 @@ from load_data import *
 from segmentation_error import *
 from visualize_results import *
 
-from cloud_segmentation_model import *
-from cloud_tracking_model import *
+from ML_tracking_model import *
 from amber_segmentation_model import *
 from amber_tracking_model import *
 from nidhi_segmentation_model import *
@@ -128,7 +127,7 @@ def tracking():
 def main():
 
     # Part One: Segmentation
-    #segmentation()
+    segmentation()
 
     # Part 2: Tracking
     # TODO: uncomment this if you want to test tracking

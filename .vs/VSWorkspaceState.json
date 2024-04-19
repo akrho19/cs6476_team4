@@ -1,11 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Segmentation_train",
-    "\\Segmentation_train\\Training",
-    "\\Tracking_train",
-    "\\Tracking_train\\Training"
+    "\\Tracking_train\\Training",
+    "\\Tracking_train\\Training\\Dataset1"
   ],
-  "SelectedNode": "\\index.html",
+  "SelectedNode": "\\main.py",
   "PreviewInSolutionExplorer": false
 }
