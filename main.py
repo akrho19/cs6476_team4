@@ -119,7 +119,7 @@ def tracking():
 
     # Report the overall accuracy
     errors = np.vstack(errors)
-    labels = ["tracked_point_x", " tracked_point_y", "shaft_axis_angle", "head_axis_angle", "clasper_angle"]#"shaft_axis_x", "shaft_axis_y", \
+    labels = ["tracked_point_x", " tracked_point_y", "shaft_axis_angle", "head_axis_angle", "euclidean_distance", "clasper_angle"]#"shaft_axis_x", "shaft_axis_y", \
                 #"head_axis_x", "head_axis_y"]#, "clasper_angle"] # TODO: Uncomment if you'd like to try with clasper_angle
     make_histograms(errors, labels, xlim=None, n_bins=20, xlabel=["Error [Pixels]"], ylabel=["Count"])
 

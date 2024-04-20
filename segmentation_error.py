@@ -30,6 +30,14 @@ def get_intersection_over_union(truth, guess):
 
     return np.sum(intersection)/np.sum(union)
 
+def get_DICE(truth,guess):
+    truth = np.any(truth, axis=2)
+
+    union = np.logical_or(truth, guess)
+    intersection = np.logical_and(truth, guess)
+
+    return np.sum(intersection)/(np.sum(truth)+np.sum(guess))
+
 def get_tracking_error(truth, guess):
     truth_tracked_point_x = truth[0]
     truth_tracked_point_y = truth[1]
@@ -45,6 +53,7 @@ def get_tracking_error(truth, guess):
 
     dx = guess_tracked_point_x - truth_tracked_point_x
     dy = guess_tracked_point_y - truth_tracked_point_y
+    d_euclidean = (dx**2 + dy**2) **.5
 
     try:
         d_shaft_angle = math.acos(np.dot(truth_shaft, guess_shaft)/(np.linalg.norm(truth_shaft)*np.linalg.norm(guess_shaft)))*180/math.pi
@@ -58,5 +67,5 @@ def get_tracking_error(truth, guess):
         
     d_clasper = truth_clasper_angle - guess_clasper_angle
 
-    return dx, dy, d_shaft_angle, d_head_angle, d_clasper
+    return dx, dy, d_shaft_angle, d_head_angle, d_euclidean, d_clasper
 
