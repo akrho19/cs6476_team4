@@ -27,14 +27,18 @@ def model_tracking_by_color(frame):
     # Separate 
     left_tip, left_shaft = get_tip_and_shaft(color_left, head_left)
 
-    # Find orientation of shaft
-    shaft_axis_x_left, shaft_axis_y_left, shaft_x, shaft_y = get_shaft_orientation(left_shaft)
-
-    # Find orientation of head
-    head_axis_x_left, head_axis_y_left, head_x, head_y = get_shaft_orientation(left_tip)
-
     # Find center of intersection between shaft and head
     tracked_point_x_left, tracked_point_y_left = get_tracked_point(left_tip, left_shaft)
+
+    # Find orientation of shaft
+    shaft_axis_x_left, shaft_axis_y_left = get_shaft_orientation(color_left)
+    shaft_axis_x_left, shaft_axis_y_left = adjust_direction(shaft_axis_x_left, shaft_axis_y_left, tracked_point_x_left, tracked_point_y_left, head_left)
+
+    # Find orientation of head
+    head_axis_x_left, head_axis_y_left = get_shaft_orientation(left_tip)
+    head_axis_x_left, head_axis_y_left = adjust_direction(head_axis_x_left, head_axis_y_left, tracked_point_x_left, tracked_point_y_left, head_left)
+
+    
     # tracked_point_x_left, tracked_point_y_left = get_intersection_point(shaft_axis_x_left, \
     #     shaft_axis_y_left, shaft_x, shaft_y, head_axis_x_left, head_axis_y_left, head_x, head_y)
 
@@ -42,44 +46,56 @@ def model_tracking_by_color(frame):
         # Separate 
         right_tip, right_shaft = get_tip_and_shaft(color_right, head_right)
 
-        # Find orientation of shaft
-        shaft_axis_x_right, shaft_axis_y_right, shaft_x, shaft_y = get_shaft_orientation(right_shaft)
-
-        # Find orientation of head
-        head_axis_x_right, head_axis_y_right, head_x, head_y = get_shaft_orientation(right_tip)
-
         # Find center of intersection between shaft and head
         tracked_point_x_right, tracked_point_y_right = get_tracked_point(right_tip, right_shaft)
+
+        # Find orientation of shaft
+        shaft_axis_x_right, shaft_axis_y_right = get_shaft_orientation(color_right)
+        shaft_axis_x_right, shaft_axis_y_right = adjust_direction(shaft_axis_x_right, shaft_axis_y_right, tracked_point_x_right, tracked_point_y_right, right_tip)
+
+        # Find orientation of head
+        head_axis_x_right, head_axis_y_right = get_shaft_orientation(right_tip)
+        head_axis_x_right, head_axis_y_right = adjust_direction(head_axis_x_right, head_axis_y_right, tracked_point_x_right, tracked_point_y_right, right_tip)
+
+        
         # tracked_point_x_right, tracked_point_y_right = get_intersection_point(shaft_axis_x_right, \
         #     shaft_axis_y_right, shaft_x, shaft_y, head_axis_x_right, head_axis_y_right, head_x, head_y)
 
         return [tracked_point_x_left, tracked_point_y_left, shaft_axis_x_left, shaft_axis_y_left, head_axis_x_left, head_axis_y_left,0], \
             [tracked_point_x_right, tracked_point_y_right, shaft_axis_x_right, shaft_axis_y_right, head_axis_x_right, head_axis_y_right,0], \
+            left_shaft, right_shaft, left_tip, right_tip
            
 
-    return [tracked_point_x_left, tracked_point_y_left, shaft_axis_x_left, shaft_axis_y_left,head_axis_x_left, head_axis_y_left,0], \
-            None
+    return [tracked_point_x_left, tracked_point_y_left, shaft_axis_x_left, shaft_axis_y_left, head_axis_x_left, head_axis_y_left,0], \
+            None, left_shaft, None, left_tip, None
+
+def adjust_direction(vx,vy,x,y,head_segment):
+    hx, hy = get_centroid(head_segment)
+    if x<hx:
+        return vx, vy
+    else:
+        return -vx, -vy
+
 
 def get_tip_and_shaft(color_segment, head_segment):
 
     tip = np.logical_and(color_segment, head_segment).astype(np.uint8)
-    
     tip, _ = get_largest_blobs(tip, second=False)
-    shaft = color_segment.astype(np.uint8) - tip
+    shaft = cv.bitwise_and(color_segment.astype(np.uint8), cv.bitwise_not(tip))
     shaft, _ = get_largest_blobs(shaft, second=False)
     return tip, shaft
 
 def get_shaft_orientation(frame):
     contours,hierarchy = cv.findContours(frame,cv.RETR_EXTERNAL,cv.CHAIN_APPROX_NONE )
     if not contours:
-        return 0,0,0,0
+        return 0,0
     cnt = contours[0]
     [vx,vy,x,y] = cv.fitLine(cnt, cv.DIST_L2,0,0.01,0.01)
 
-    vx = vx / math.sqrt(vx*vx + vy*vy);
-    vy = vy / math.sqrt(vx*vx + vy*vy);
+    vx = vx / math.sqrt(vx*vx + vy*vy)
+    vy = vy / math.sqrt(vx*vx + vy*vy)
 
-    return vx[0], vy[0], x[0], y[0]
+    return vx[0], vy[0]
 
 def get_intersection_point(vx1,vy1,x1,y1,vx2,vy2,x2,y2):
     x = 0
@@ -93,14 +109,15 @@ def get_intersection_point(vx1,vy1,x1,y1,vx2,vy2,x2,y2):
     return x, y
 
 def get_centroid(frame):
-    mass_x, mass_y = np.where(frame)
+    #height, width = np.shape(frame)
+    mass_y, mass_x = np.where(frame)
     cx = np.average(mass_x)
     cy = np.average(mass_y)
     return cx, cy
 
 def get_tracked_point(head, shaft):
     # dilate the shaft 
-    kernel = np.ones((2, 2), np.uint8)
+    kernel = np.ones((10, 10), np.uint8)
     shaft = cv.dilate(shaft, kernel, iterations=1) 
 
     # find the collisions

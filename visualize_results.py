@@ -18,7 +18,7 @@ YELLOW = (255, 255, 0)
 
 VECTOR_LENGTH = 60
 
-def make_histograms(data, labels, xlabel="Rate", ylabel="Count", xlim=None, n_bins=20):
+def make_histograms(data, labels, xlabel=["Rate"], ylabel=["Count"], xlim=None, n_bins=20):
     '''
     Makes a figure with a histogram subplot for each column in data.
     Parameters:
@@ -31,20 +31,25 @@ def make_histograms(data, labels, xlabel="Rate", ylabel="Count", xlim=None, n_bi
     returns: None
     '''
 
+    #np.savetxt("error.csv", data, delimiter=",")
+
     figure = plt.figure()
     for i in range(0,len(labels)):
-        print(labels[i] + " Average: %f" % np.mean(data[:,i]))
-        plt.subplot(2, -(data.shape[1]//-2), i+1)
-        plt.hist(data[:,i], bins=n_bins, range=xlim)
+        currentData = data[:,i][~np.isnan(data[:,i])]
+        print(labels[i] + " RMS Error: %f" % np.sqrt(np.mean(np.square(currentData))))
+        print(labels[i] + " Percent Within 10 units: %f %%" % (100*(np.sum(np.absolute(currentData) <= 10)/len(currentData))))
+        print(labels[i] + " Median absolute error: %f" % np.median(np.absolute(currentData)))
+        plt.subplot(-(data.shape[1]//-2), 2, i+1)
+        plt.hist(currentData, bins=n_bins, range=xlim)
         plt.xlim(xlim)
-        plt.xlabel(xlabel)
-        plt.ylabel(ylabel)
+        plt.xlabel(xlabel[i] if len(xlabel) > 1 else xlabel[0])
+        plt.ylabel(ylabel[i]if len(ylabel) > 1 else ylabel[0])
         plt.title(labels[i])
 
     plt.show()
 
 
-def visualize_pose(frame, pose):
+def visualize_pose(frame, pose, center_hue):
     '''
     Returns a frame that, when displayed as an image
     Is the original frame with annotations showing the pose
@@ -79,7 +84,7 @@ def visualize_pose(frame, pose):
     frame = cv.line(frame, start_point, end_point, RED, 5)
 
     # Draw the tracked point
-    frame = cv.circle(frame, start_point, 10, YELLOW, -1)
+    frame = cv.circle(frame, start_point, 10, center_hue, -1)
 
     # Draw the angle
     axesLength = (20,20)
