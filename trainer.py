@@ -90,9 +90,9 @@ class Trainer:
         val_loss = self.evaluate(split="test")
 
         self.train_loss_history.append(train_loss)
-        self.train_accuracy_history.append(train_acc)
+        #self.train_accuracy_history.append(train_acc)
         self.validation_loss_history.append(val_loss)
-        self.validation_accuracy_history.append(val_acc)
+        #self.validation_accuracy_history.append(val_acc)
 
         print(
             "Epoch:{}, Training Loss:{:.4f}, Validation Loss:{:.4f}".format(
@@ -102,11 +102,12 @@ class Trainer:
 
         for epoch_idx in range(num_epochs):
             self.model.train()
-            for _, batch in enumerate(self.train_loader):
+            for step, batch in enumerate(self.train_loader):
+                #print(step)
                 if self.cuda:
-                    input_data, target_data = Variable(batch[0]).cuda(), Variable(batch[1]).cuda()
+                    input_data, target_data = batch[0].cuda(), batch[1].cuda()
                 else:
-                    input_data, target_data = Variable(batch[0]), Variable(batch[1])
+                    input_data, target_data = batch[0], batch[1]
 
                 output_data = self.model(input_data)
                 loss = compute_loss(self.model, output_data, target_data)
@@ -134,7 +135,7 @@ class Trainer:
         """
         Get the loss and accuracy on the test/train dataset
         """
-        print("Trainer evaluate ", split)
+        #print("Trainer evaluate ", split)
         self.model.eval()
 
         num_examples = 0

@@ -13,7 +13,8 @@ class TrackNet(nn.Module):
         self.fc_layers = nn.Sequential()
         self.loss_criterion = None
 
-        self.conv_layers.append(nn.Conv3d(1,30,(10,10,3)))
+        self.conv_layers.append(nn.Conv3d(1,30,(3,10,10)))
+        self.conv_layers.append(nn.Flatten(start_dim=1,end_dim=2))
         self.conv_layers.append(nn.MaxPool2d(3))
         self.conv_layers.append(nn.ReLU())
         self.conv_layers.append(self.make_2D_block(30,40,(7,7)))
@@ -45,7 +46,7 @@ class TrackNet(nn.Module):
         Args:
         -   x: the input image [Dim: (N,C,H,W)]
         Returns:
-        -   y: the output (raw scores) of the net [Dim: (N,15)]
+        -   y: the output (estimated poses) of the net [Dim: (N,14)]
         """
         conv_features = None  # output of x passed through convolution layers (4D tensor)
         flattened_conv_features = None  # conv_features reshaped into 2D tensor using .reshape()
@@ -53,6 +54,9 @@ class TrackNet(nn.Module):
         ############################################################################
         # Student code begin
         ############################################################################
+        #print(x.shape)
+        x = torch.unsqueeze(x,dim=1)
+        #print(x.shape)
         conv_features = self.conv_layers.forward(x)
         flat = nn.Flatten()
         flattened_conv_features = flat(conv_features)

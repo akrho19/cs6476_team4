@@ -89,7 +89,7 @@ def training():
                                   model_dir = os.path.join(model_base_path, 'tracking_net'),
                                   train_data_transforms = fundamental_transforms,
                                   test_data_transforms = fundamental_transforms,
-                                  batch_size = 32,
+                                  batch_size = 30,
                                   load_from_disk = False,
                                   cuda = True,
                                  )
@@ -107,6 +107,10 @@ def model_tracking_by_ML(frame):
     model.eval()
 
     pose = model(get_fundamental_transforms()(Image.fromarray(frame))).tolist()
+    pose[0] = pose[0]* 720
+    pose[1] = pose[1]* 576
+    pose[7] = pose[7]* 720
+    pose[8] = pose[8]* 576
     return pose[0:7], pose[7:14]
 
 if __name__ == "__main__":
