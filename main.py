@@ -7,8 +7,7 @@ from load_data import *
 from segmentation_error import *
 from visualize_results import *
 
-from cloud_segmentation_model import *
-from cloud_tracking_model import *
+from ML_tracking_model import *
 from amber_segmentation_model import *
 from amber_tracking_model import *
 from nidhi_segmentation_model import *
@@ -58,12 +57,12 @@ def segmentation():
         if cv.waitKey(1) == ord('q'):
             break
 
-        errors.append(get_segmentation_error(left_truth, left_guess))
-        iou.append(get_intersection_over_union(left_truth, left_guess))
+        errors.append(get_segmentation_error(right_truth, right_guess))
+        iou.append(get_intersection_over_union(right_truth, right_guess))
 
-        if right_truth is not None:
-            errors.append(get_segmentation_error(right_truth, right_guess))
-            iou.append(get_intersection_over_union(right_truth, right_guess))
+        if left_truth is not None:
+            errors.append(get_segmentation_error(left_truth, left_guess))
+            iou.append(get_intersection_over_union(left_truth, left_guess))
 
 
     # Report the overall accuracy
@@ -95,18 +94,18 @@ def tracking():
         # print(left_shaft)
         # print(np.shape(left_shaft))
 
-        left_error = [(abs(g) - abs(t)) for g, t in zip(left_guess, left_truth)]
+        right_error = [(abs(g) - abs(t)) for g, t in zip(left_guess, left_truth)]
         errors.append(left_error)
 
         # Display annotated frame
         annotated_frame = frame
 
-        annotated_frame = visualize_pose(annotated_frame, left_guess)
-        annotated_frame = visualize_pose(annotated_frame, left_truth)
-        if right_truth is not None and right_guess is not None:
+        annotated_frame = visualize_pose(annotated_frame, right_guess)
+        annotated_frame = visualize_pose(annotated_frame, right_truth)
+        if left_truth is not None and left_guess is not None:
 
-            annotated_frame = visualize_pose(annotated_frame, right_guess)
-            annotated_frame = visualize_pose(annotated_frame, right_truth)
+            annotated_frame = visualize_pose(annotated_frame, left_guess)
+            annotated_frame = visualize_pose(annotated_frame, left_truth)
 
         annotated_frame = cv.cvtColor(annotated_frame, cv.COLOR_RGB2BGR)
         cv.imshow('frame', annotated_frame)
@@ -114,9 +113,9 @@ def tracking():
         if cv.waitKey(1) == ord('q'):
             break
 
-        if right_truth is not None:
-            right_error = [(abs(g) - abs(t)) for g, t in zip(right_guess, right_truth)]
-            errors.append(right_error)
+        if left_truth is not None:
+            left_error = [(abs(g) - abs(t)) for g, t in zip(left_guess, left_truth)]
+            errors.append(left_error)
 
     # Report the overall accuracy
     errors = np.vstack(errors)

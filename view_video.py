@@ -11,7 +11,7 @@ def view_video(path):
     while True:
         # Capture frame-by-frame
         ret, frame = cap.read()
-    
+
         # if frame is read correctly ret is True
         if not ret:
             print("Can't receive frame (stream end?). Exiting ...")
@@ -25,9 +25,10 @@ def view_video(path):
             break
     
     # When everything done, release the capture
+    
     cap.release()
     cv.destroyAllWindows()
 
 
 if __name__ == "__main__":
-    view_video("Tracking_train\\Training\\Dataset2\\Video.avi")
+    view_video("Tracking_test\\Dataset6\\Video.avi")

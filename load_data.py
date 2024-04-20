@@ -32,8 +32,8 @@ def yield_tracking_data(path):
             left_generator = yield_none()
             right_generator = yield_none()
             if 'Pose.txt' in files:
-                left_path = os.path.join(subdir, 'Pose.txt')
-                left_generator = yield_pose(left_path)
+                right_path = os.path.join(subdir, 'Pose.txt')
+                right_generator = yield_pose(right_path)
             elif 'Left_Instrument_Pose.txt' in files:
                 left_path = os.path.join(subdir, 'Left_Instrument_Pose.txt')
                 left_generator = yield_pose(left_path)
@@ -78,8 +78,8 @@ def yield_segmentation_data(path):
             left_generator = yield_none()
             right_generator = yield_none()
             if 'Segmentation.avi' in files:
-                left_path = os.path.join(subdir, 'Segmentation.avi')
-                left_generator = yield_video(left_path)
+                right_path = os.path.join(subdir, 'Segmentation.avi')
+                right_generator = yield_video(right_path)
             elif 'Left_Instrument_Segmentation.avi' in files:
                 left_path = os.path.join(subdir, 'Left_Instrument_Segmentation.avi')
                 left_generator = yield_video(left_path)
