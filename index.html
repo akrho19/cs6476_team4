@@ -245,6 +245,9 @@ variety of methods for tool segmentation and tracking and provide side by side r
     color so far.  After the convolution, we flattened the data and passed through three fully connected linear layers to bring it down to the 1x14 size that we desired.
     This 1x14 array can be split into the two tool poses which are length 7 each.  We also included dropouts of p=0.1 after the colvolutional blocks and of p=0.5 in between the
     fully connected layers.  The model was trained using an Adam optimizer at a learning rate of 1e-3 with an 8e-4 weight decay with a batch size of 30 and 30 epochs.
+    For the loss function, we used a mean squared error loss.  Additionally, to prevent the position tracking from dominating the gradients in the training process, we normalized
+    the position data for the height and width of the image, such that the model predicts a value from 0.0 to 1.0 for the positions, which give the proper pixel values when multiplied
+    again by the height and width of the image.
 </p>
 
 
@@ -409,10 +412,11 @@ We used the error between the actual and expected pose values.
 <p>
     The average errors, in pixels, were:
     <ul>
-        <li>tracked point x RMS Error: 93.829153 pixels (12.33% of image width)</li>
-        <li>tracked point y RMS Error: 81.784727 pixels (11.42% of image height)</li>
-        <li>shaft angle RMS Error: 49.777792 degrees</li>
-        <li>head angle RMS Error: 22.205741 degrees</li>
+        <li>tracked point x RMS Error: 95.718955 pixels (13.29% of image width)</li>
+        <li>tracked point y RMS Error: 81.962481 pixels (14.23% of image height)</li>
+        <li>shaft angle RMS Error: 39.735864 degrees</li>
+        <li>head angle RMS Error: 19.556128 degrees</li>
+        <li>clasper angle RMS Error: 11.725729 degrees</li>
     </ul>
     <br>
     For comparison, the total size of the images were 720x576 pixels.
@@ -421,14 +425,17 @@ We used the error between the actual and expected pose values.
     So we additionally present the median absolute error:
 
     <ul>
-        <li>tracked point x Median Error: 51.458116 pixels (7.15% of image width)</li>
-        <li>tracked point y Median Error: 54.509924 pixels (9.46% of image height)</li>
-        <li>shaft angle Median Error: 4.996736 degrees</li>
-        <li>head angle Median Error: 14.338042 degrees</li>
+        <li>tracked point x Median Error: 55.302938 pixels (7.68% of image width)</li>
+        <li>tracked point y Median Error: 54.814855 pixels (9.52% of image height)</li>
+        <li>shaft angle Median Error: 7.258671 degrees</li>
+        <li>head angle Median Error: 9.517581 degrees</li>
+        <li>clasper angle Median Error: 5.508275 degrees</li>
     </ul>
     <br>
     <img src="learning_based_tracking_plots.png" style="width:50%">
     <br>
+    Overall, this method was not very effective, as shown when watching the videos of the estimated pose in frame, where it is clear that the model gets pigeon holed
+    into always guessing close to a predicted average position for each video, and barely deviates from that position for any given frame.
 </p>
 
   
