@@ -194,8 +194,17 @@ variety of methods for tool segmentation and tracking and provide side by side r
     We attempt on using some information from detecting the keypoints for obtaining a good tip detection of the tool while tracking the pose. For segmentation though,
     this approach needs to be combined with another approach to get good results.
 </p>
-
-
+<h4>Learning based segmentation</h4>
+<p>
+  We attempt segmenting the left surgical instrument from the video frame. One video frame is used and split for the training and validation data. Post training, a different video is used to test the performance of the trained model.
+  We use a UNET model, following the approach in 1 , for our dataset. The baseline model is trained on our dataset and we evaluate the performance of the model. The architecture of the UNET is shown below.
+  <br>
+  <img src="unet_arch.png" style="width:50%">
+  <br>
+  
+  Description of architecture: The UNET model is commonly used for biomedical datasets. It has an encoder-decoder architecture. The “encoder” extracts the features and captures the context of the scene. The “decoder” generates a segmentation map for accurate localization of the features. This is achieved by the encoder reducing the spatial dimensions of the input image and increasing the number of feature channels, while the decoder would increase the spatial dimensions of the feature maps. 
+  In the model the “jaccard distance” which gives the intersection over union is used as the loss function to train the model. 
+</p>
 
 <h3>Tracking</h3>
 
@@ -238,10 +247,7 @@ variety of methods for tool segmentation and tracking and provide side by side r
     fully connected layers.  The model was trained using an Adam optimizer at a learning rate of 1e-3 with an 8e-4 weight decay with a batch size of 30 and 30 epochs.
 </p>
 
-<h4>Nidhi's Tracking Method</h4>
-<p>
-    write here
-</p>
+
 
 <h3>Contribution</h3>
   While none of our approaches are novel, we contribute by providing a side by side comparison to show which are
@@ -254,7 +260,7 @@ variety of methods for tool segmentation and tracking and provide side by side r
   The learning approaches are more likely to be generalizable. 
 
 
-<h2>Experiments / Results</h2>
+<h2>Experiments</h2>
 <!-- <p>Describe what you tried and what datasets were used. We aren’t expecting you to beat state of the art, but we are interested in you describing what worked or didn’t work and to give reasoning as to why you believe so. Compare your approach against baselines (either previously established or you established) in this section. Provide at least one qualitative result (i.e. a visual output of your system on an example image).
 ○	Note: For the project update, feel free to discuss what worked and didn’t work. Why do you think an approach was (un)successful? We expect you to have dealt with dataset setup and completed at least 1 experimental result by the project update.
 </p> -->
@@ -324,7 +330,14 @@ segmentation provided by EndoVis.
 
 <h4>Machine Learning Based Segmentation</h4>
 <p>
-
+<li>Different optimizers – “adam”, “sgd”, “rmsprop”, “adamax” are tried to compare the accuracy. </li>
+   <img src="iou_opt.png" style="width:50%">
+    
+<li>Since, the model overfits the training dataset, different dropout parameters – 0.1 0.6 are compared.</li>
+<li>We obtain a 99.5% train accuracy, 78% test accuracy for the best trained model. The loss and accuracy during training is shown for the best trained model.</li>
+ <img src="model_loss_and_accuracy.png" style="width:50%">
+<li>The input, mask and segmented image for a test case is also shown below.</li>
+   <img src="unet_final_output.png" style="width:50%">
 </p>
 
 <h3>Tracking</h3>
@@ -344,8 +357,7 @@ The desired output is a 1x7 array with the following values:
 
 to the tool in the image. 
 <hv>Success metric</hv>
-Intersection Over Union was used to measure success, comparing our segmentation to the ground-truth 
-segmentation provided by EndoVis. 
+We used the error between the actual and expected pose values. 
 
 <h4>Strategies</h4>
   <h5>Classical Tracking Method</h5>
@@ -421,10 +433,47 @@ segmentation provided by EndoVis.
 
   
 
-<h2>What’s next</h2>
-<!-- <p>What is your plan until the final project due date? What methods and experiments do you plan on running?
+<h2>Results</h2>
+
+<h3>Baseline</h3>
+<!--■	How do prior works perform on this task? It’s best to have a quantitative comparison 
+  using your metric for success. If that is not possible, a qualitative result will suffice. 
+■	You are required to have at least one comparison-->
+
+<h3>Key Result</h3>
+<!--■	Clearly present your key result. This should include both your performance according to your 
+  metric of success defined above and a qualitative output example from your system. -->
+<!--■	Specify what variants of your approach you tried to make progress towards finding a solution. 
+■	Ultimately, describe your final results. Did your approach work? If not, explain why you 
+believe it did not. 
+-->
+
+<h2>Discussion</h2>
+<!--○	Provide a reflective paragraph about your project. Summarize what you accomplished, 
+  what you learned, and what remains for future works. -->
+  With this project, a comparison of different segmentation and tracking algorithms was accomplished.
+  Over the course of this project, we learned how to implement a variety of computer vision
+  algorithms and strategies. We were able to employ concepts we learned about in class to 
+  solve a real-world problem. We used concepts including color spaces, filtering, thresholding,
+  blob detection, SIFT, and learning. We also became more comfortable with computer vision
+  and learning tools including OpenCV and Pytorch. In the future, we could try the strategies
+  from this project with other endoscopes and tools.
+
+<h2>Challenges Encountered</h2>
+<!--○	What challenges did your team encounter throughout the project?
+○	If you were to start over today, is that a different strategy you would take 
+to make progress on your overall problem statement?-->
+We initially spent a lot of time working on classical techniques for doing segmentation and
+tracking, with mediocre results. A learning approach is probably better at capturing the 
+nuances of the image and is more reliable overall. If we were to do this project again, we
+might have started with learning right away and saved more time to fine tune our 
+model architecture. 
+
+
+<!-- <h2>What’s next</h2>
+<p>What is your plan until the final project due date? What methods and experiments do you plan on running?
 ○	Note: Include a task list (can use a table) indicating each step you are planning and anticipated completion date.
-  The next we would try combining classical approaches and learning based medthods. -->
+  The next we would try combining classical approaches and learning based medthods.
 <p>
     <li>Combine color segmentation with key features for tracking tool tip -  March 27 - April 2</li>
 
@@ -449,9 +498,9 @@ segmentation provided by EndoVis.
             <li> Use regularization to prevent overfitting. </li>
         </ul>
     </li>
-</p>
+</p> -->
 
-<h2>Team member contributions</h2>
+<h2>Team Member Contributions</h2>
 <!-- <p>
   Indicate what you anticipate each team member will contribute by the final project submission.
 ○	Note: List every member name and their corresponding tasks in bullet points – or you may simply assign team member names to the task list you created above.
@@ -479,7 +528,7 @@ segmentation provided by EndoVis.
             <li>Set up repository</li>
             <li>Make website template</li>
             <li>Write utility code for loading data</li>
-            <li>Write the main architecture of the program</li>
+            <li>Write the main architecture of the program for classical approaches</li>
             <li>Write utility code for visualizing results</li>
             <li>Experiment with color-based segmentation</li>
             <li>Experiment with the classical tracking approach</li>
