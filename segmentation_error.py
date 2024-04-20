@@ -36,7 +36,7 @@ def get_DICE(truth,guess):
     union = np.logical_or(truth, guess)
     intersection = np.logical_and(truth, guess)
 
-    return np.sum(intersection)/(np.sum(truth)+np.sum(guess))
+    return 2*np.sum(intersection)/(np.sum(truth)+np.sum(guess))
 
 def get_tracking_error(truth, guess):
     truth_tracked_point_x = truth[0]
