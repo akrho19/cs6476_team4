@@ -36,7 +36,8 @@ def make_histograms(data, labels, xlabel=["Rate"], ylabel=["Count"], xlim=None, 
     figure = plt.figure()
     for i in range(0,len(labels)):
         currentData = data[:,i][~np.isnan(data[:,i])]
-        print(labels[i] + " RMS Error: %f" % np.sqrt(np.mean(np.square(currentData))))
+        print(labels[i] + " Mean: %f" % np.mean(currentData))
+        print(labels[i] + " RMS: %f" % np.sqrt(np.mean(np.square(currentData))))
         print(labels[i] + " Percent Within 10 units: %f %%" % (100*(np.sum(np.absolute(currentData) <= 10)/len(currentData))))
         print(labels[i] + " Median absolute error: %f" % np.median(np.absolute(currentData)))
         plt.subplot(-(data.shape[1]//-2), 2, i+1)

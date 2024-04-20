@@ -275,6 +275,7 @@ to the tool in the image.
 <hv>Success metric</hv>
 Intersection Over Union was used to measure success, comparing our segmentation to the ground-truth 
 segmentation provided by EndoVis. 
+DICE score was used as an alternative measure of success.
 
 <h4>Strategies</h4>
 <h5>Color Based Segmentation</h5>
@@ -287,11 +288,13 @@ segmentation provided by EndoVis.
     generalizable to other data sets where the lighting is different. In the future, perhaps these
     parameters could be chosen using learning.
     <br>
-    Overall, we acheived an average IoU of 53.8% with this algorithm.
+    Overall, we acheived an average IoU of 53.8% with this algorithm, and a mean DICE score of 68.2%. 
 </p>
 <img src="color_segmentation_example.png" style="width:50%">
 <br>
 <img src="color_segmentation_iou.png" style="width:50%">
+<br>
+<img src="color_segmentation_dice.png" style="width:50%">
 
   <h5>Blob Detection Based Segmentation Method</h5>
   <p>
@@ -354,6 +357,7 @@ We used the error between the actual and expected pose values.
     <ul>
         <li>tracked point x RMS Error: 217.443041 pixels (30.20% of image width)</li>
         <li>tracked point y RMS Error: 107.676291 pixels (18.69% of image height)</li>
+        <li>tracked point Euclidean distance RMS Error: 242.755722 pixels</li>
         <li>shaft angle RMS Error: 72.999660 degrees</li>
         <li>head angle RMS Error: 50.790612 degrees</li>
     </ul>
@@ -366,6 +370,7 @@ We used the error between the actual and expected pose values.
     <ul>
         <li>tracked point x Median Error: 36.381992 pixels (5.05% of image width)</li>
         <li>tracked point y Median Error: 40.129398 pixels (6.97% of image height)</li>
+        <li>tracked point Euclidean distance Median Error: 69.737653 pixels</li>
         <li>shaft angle Median Error: 4.996736 degrees</li>
         <li>head angle Median Error: 14.338042 degrees</li>
     </ul>

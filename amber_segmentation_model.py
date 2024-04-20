@@ -58,8 +58,6 @@ def model_segmentation_by_color(frame):
     # frame = cv.dilate(frame, kernel, iterations=1) 
     # Might be useful: https://docs.opencv.org/4.x/dd/d49/tutorial_py_contour_features.html
 
-    return get_largest_blobs(frame, second=True)[1]
-
     return get_largest_blobs(frame, second=True)
 
 def is_red(frame):

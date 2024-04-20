@@ -33,9 +33,8 @@ def get_intersection_over_union(truth, guess):
 def get_DICE(truth,guess):
     truth = np.any(truth, axis=2)
 
-    union = np.logical_or(truth, guess)
+    guess = guess > 0 # make sure guess is boolean
     intersection = np.logical_and(truth, guess)
-
     return 2*np.sum(intersection)/(np.sum(truth)+np.sum(guess))
 
 def get_tracking_error(truth, guess):
