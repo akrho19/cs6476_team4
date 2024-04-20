@@ -25,21 +25,8 @@ from load_data import *
 import time
 #import glob
 
-def compute_mean_and_std(dir_name: str):
-    print("ML_tracking_model compute_meand_and_std")
-    scaler = StandardScaler()
-    for frame, _, _ in yield_segmentation_data(dir_name):
-    #paths = glob.glob(dir_name+"/*/*/Video.avi")
-    #for path in paths:
-        pixels = np.reshape(np.array(frame),(-1,1))#list(Image.open(path).convert(mode="L").getdata())),(-1,1))
-        normalized_pixels = np.divide(pixels,255.0)
-        scaler.partial_fit(normalized_pixels)
-    mean = scaler.mean_
-    std = np.sqrt(scaler.var_)
-    return mean, std
-
-def get_fundamental_transforms(inp_size: tuple, pixel_mean: np.array, pixel_std: np.array):
-    print("ML_tracking_model get_fundamental_transforms")
+def get_fundamental_transforms(inp_size: tuple, pixel_mean=0, pixel_std=1):
+    #print("ML_tracking_model get_fundamental_transforms")
     return transforms.Compose(
         [
             transforms.Resize(size=inp_size,antialias=True),
@@ -103,10 +90,14 @@ def training():
 def model_tracking_by_ML(frame):
 
     model = TrackNet()
-    model.load_state_dict(torch.load('model_checkpoints\\tracking_net\\checkpoint.pt'))
+    state_dict = torch.load('model_checkpoints\\tracking_net\\checkpoint.pt')
+    model.load_state_dict(state_dict['model_state_dict'])
     model.eval()
 
-    pose = model(get_fundamental_transforms()(Image.fromarray(frame))).tolist()
+    frame_tensor = get_fundamental_transforms((576,720))(Image.fromarray(frame))
+    frame_tensor = torch.squeeze(frame_tensor)
+    frame_tensor = torch.unsqueeze(frame_tensor, dim=0)
+    pose = torch.squeeze(model(frame_tensor)).tolist()
     pose[0] = pose[0]* 720
     pose[1] = pose[1]* 576
     pose[7] = pose[7]* 720

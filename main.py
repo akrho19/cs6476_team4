@@ -94,8 +94,8 @@ def tracking():
         # print(left_shaft)
         # print(np.shape(left_shaft))
 
-        right_error = [(abs(g) - abs(t)) for g, t in zip(left_guess, left_truth)]
-        errors.append(left_error)
+        right_error = [(abs(g) - abs(t)) for g, t in zip(right_guess, right_truth)]
+        errors.append(right_error)
 
         # Display annotated frame
         annotated_frame = frame
@@ -120,7 +120,7 @@ def tracking():
     # Report the overall accuracy
     errors = np.vstack(errors)
     labels = ["tracked_point_x", " tracked_point _y", "shaft_axis_x", "shaft_axis_y", \
-                "head_axis_x", "head_axis_y"] #, "clasper_angle"] # TODO: Uncomment if you'd like to try with clasper_angle
+                "head_axis_x", "head_axis_y", "clasper_angle"] # TODO: Uncomment if you'd like to try with clasper_angle
     make_histograms(errors, labels, xlim=None, n_bins=20, xlabel="Error [Pixels]", ylabel="Count")
 
 

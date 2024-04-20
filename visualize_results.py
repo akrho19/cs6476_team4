@@ -49,7 +49,7 @@ def make_histograms(data, labels, xlabel=["Rate"], ylabel=["Count"], xlim=None, 
     plt.show()
 
 
-def visualize_pose(frame, pose, center_hue):
+def visualize_pose(frame, pose, center_hue=YELLOW):
     '''
     Returns a frame that, when displayed as an image
     Is the original frame with annotations showing the pose

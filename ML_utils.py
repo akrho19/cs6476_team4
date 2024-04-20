@@ -15,3 +15,16 @@ def compute_loss(model: torch.nn.Module, model_output: torch.tensor, true_pose: 
     loss = model.loss_criterion(model_output,true_pose)
 
     return loss
+
+def compute_mean_and_std(dir_name: str):
+    print("ML_tracking_model compute_mean_and_std")
+    scaler = StandardScaler()
+    for frame, _, _ in yield_segmentation_data(dir_name):
+    #paths = glob.glob(dir_name+"/*/*/Video.avi")
+    #for path in paths:
+        pixels = np.reshape(np.array(frame),(-1,1))#list(Image.open(path).convert(mode="L").getdata())),(-1,1))
+        normalized_pixels = np.divide(pixels,255.0)
+        scaler.partial_fit(normalized_pixels)
+    mean = scaler.mean_
+    std = np.sqrt(scaler.var_)
+    return mean, std

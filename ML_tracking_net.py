@@ -8,7 +8,7 @@ class TrackNet(nn.Module):
         Init function to define the layers and loss function
         """
         super().__init__()
-        print("TrackNet __init__ ")
+        #print("TrackNet __init__ ")
         self.conv_layers = nn.Sequential()
         self.fc_layers = nn.Sequential()
         self.loss_criterion = None
