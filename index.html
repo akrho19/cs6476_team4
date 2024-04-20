@@ -194,8 +194,17 @@ variety of methods for tool segmentation and tracking and provide side by side r
     We attempt on using some information from detecting the keypoints for obtaining a good tip detection of the tool while tracking the pose. For segmentation though,
     this approach needs to be combined with another approach to get good results.
 </p>
-
-
+<h4>Learning based segmentation</h4>
+<p>
+  We attempt segmenting the left surgical instrument from the video frame. One video frame is used and split for the training and validation data. Post training, a different video is used to test the performance of the trained model.
+  We use a UNET model, following the approach in 1 , for our dataset. The baseline model is trained on our dataset and we evaluate the performance of the model. The architecture of the UNET is shown below.
+  <br>
+  <img src="unet_arch.png" style="width:50%">
+  <br>
+  
+  Description of architecture: The UNET model is commonly used for biomedical datasets. It has an encoder-decoder architecture. The “encoder” extracts the features and captures the context of the scene. The “decoder” generates a segmentation map for accurate localization of the features. This is achieved by the encoder reducing the spatial dimensions of the input image and increasing the number of feature channels, while the decoder would increase the spatial dimensions of the feature maps. 
+  In the model the “jaccard distance” which gives the intersection over union is used as the loss function to train the model. 
+</p>
 
 <h3>Tracking</h3>
 
@@ -237,10 +246,7 @@ variety of methods for tool segmentation and tracking and provide side by side r
     at a learning rate of 1e-3 with an 8e-4 weight decay with a batch size of 30 and 30 epochs.
 </p>
 
-<h4>Nidhi's Tracking Method</h4>
-<p>
-    write here
-</p>
+
 
 <h3>Contribution</h3>
   While none of our approaches are novel, we contribute by providing a side by side comparison to show which are
@@ -323,7 +329,14 @@ segmentation provided by EndoVis.
 
 <h4>Machine Learning Based Segmentation</h4>
 <p>
-
+<li>Different optimizers – “adam”, “sgd”, “rmsprop”, “adamax” are tried to compare the accuracy. </li>
+   <img src="iou_opt.png" style="width:50%">
+    
+<li>Since, the model overfits the training dataset, different dropout parameters – 0.1 0.6 are compared.</li>
+<li>We obtain a 99.5% train accuracy, 78% test accuracy for the best trained model. The loss and accuracy during training is shown for the best trained model.</li>
+ <img src="model_loss_and_accuracy.png" style="width:50%">
+<li>The input, mask and segmented image for a test case is also shown below.</li>
+   <img src="unet_final_output.png" style="width:50%">
 </p>
 
 <h3>Tracking</h3>
