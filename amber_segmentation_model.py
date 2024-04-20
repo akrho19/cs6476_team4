@@ -26,12 +26,17 @@ def model_segmentation_by_color(frame):
     # Unless you upscale it again at the end
     # Because the output needs to be the same size as the input
 
+    
+
     # Apply gaussian blur
     kernel_size = 11
     frame = cv.GaussianBlur(frame,(kernel_size,kernel_size),0)
 
+    
 
     frame = cv.bitwise_not(is_red(frame))
+
+    
 
     # Edges are weird. Get them out
     frame[0:15,:] = 0
@@ -52,6 +57,8 @@ def model_segmentation_by_color(frame):
     # kernel = np.ones((5, 5), np.uint8)
     # frame = cv.dilate(frame, kernel, iterations=1) 
     # Might be useful: https://docs.opencv.org/4.x/dd/d49/tutorial_py_contour_features.html
+
+    return get_largest_blobs(frame, second=True)[1]
 
     return get_largest_blobs(frame, second=True)
 
@@ -87,6 +94,7 @@ def head_segmentation_by_color(frame):
     # Unless you upscale it again at the end
     # Because the output needs to be the same size as the input
 
+    
     # Apply gaussian blur
     greyframe = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     kernel_size = 25

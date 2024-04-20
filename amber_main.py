@@ -7,8 +7,6 @@ from amber_load_data import *
 from segmentation_error import *
 from visualize_results import *
 
-from cloud_segmentation_model import *
-from cloud_tracking_model import *
 from amber_segmentation_model import *
 from amber_tracking_model import *
 from nidhi_segmentation_model import *
@@ -25,7 +23,7 @@ def segmentation():
     # TODO actually implement some training if you want
     # Maybe we save this for next time though
 
-    segmentation_test_folder = "Segmentation_test/Dataset4"
+    segmentation_test_folder = "Segmentation_test/Dataset1"
 
     errors = []
     iou = []
@@ -35,7 +33,7 @@ def segmentation():
         # Write your model as its own function in the file segmetnation_model.py
         # Your model must return the same things, 
         # But may take in additional parameters such as weights calculated during training 
-        left_guess, right_guess =  head_segmentation_by_color(frame) # model_segmentation_by_color(frame) 
+        left_guess =  model_segmentation_by_color(frame) # model_segmentation_by_color(frame) 
         #left_guess, right_guess =  model_segmentation_by_blobs(frame) 
         #keypoints, descriptors, segmented_img, left_guess, right_guess = model_segmentation_by_sift(frame)
         #prev_frame = frame
@@ -55,8 +53,10 @@ def segmentation():
         # or at least half of it
         cv.imshow('frame', left_guess)
 
-        if cv.waitKey(1) == ord('q'):
-            break
+        while cv.waitKey(1) != ord('q'):
+            pass # break
+
+        break # TODO remove
 
         errors.append(get_segmentation_error(left_truth, left_guess))
         iou.append(get_intersection_over_union(left_truth, left_guess))
@@ -65,6 +65,7 @@ def segmentation():
             errors.append(get_segmentation_error(right_truth, right_guess))
             iou.append(get_intersection_over_union(right_truth, right_guess))
 
+        
 
     # Report the overall accuracy
     # errors = np.vstack(errors)
@@ -132,11 +133,11 @@ def tracking():
 def main():
 
     # Part One: Segmentation
-    #segmentation()
+    segmentation()
 
     # Part 2: Tracking
     # TODO: uncomment this if you want to test tracking
-    tracking()
+    #tracking()
 
 if __name__ == "__main__":
     main()
