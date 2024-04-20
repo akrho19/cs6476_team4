@@ -57,12 +57,12 @@ def segmentation():
         if cv.waitKey(1) == ord('q'):
             break
 
-        errors.append(get_segmentation_error(left_truth, left_guess))
-        iou.append(get_intersection_over_union(left_truth, left_guess))
+        errors.append(get_segmentation_error(right_truth, right_guess))
+        iou.append(get_intersection_over_union(right_truth, right_guess))
 
-        if right_truth is not None:
-            errors.append(get_segmentation_error(right_truth, right_guess))
-            iou.append(get_intersection_over_union(right_truth, right_guess))
+        if left_truth is not None:
+            errors.append(get_segmentation_error(left_truth, left_guess))
+            iou.append(get_intersection_over_union(left_truth, left_guess))
 
 
     # Report the overall accuracy
