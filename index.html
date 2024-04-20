@@ -253,7 +253,7 @@ variety of methods for tool segmentation and tracking and provide side by side r
   The learning approaches are more likely to be generalizable. 
 
 
-<h2>Experiments / Results</h2>
+<h2>Experiments</h2>
 <!-- <p>Describe what you tried and what datasets were used. We aren’t expecting you to beat state of the art, but we are interested in you describing what worked or didn’t work and to give reasoning as to why you believe so. Compare your approach against baselines (either previously established or you established) in this section. Provide at least one qualitative result (i.e. a visual output of your system on an example image).
 ○	Note: For the project update, feel free to discuss what worked and didn’t work. Why do you think an approach was (un)successful? We expect you to have dealt with dataset setup and completed at least 1 experimental result by the project update.
 </p> -->
@@ -401,10 +401,47 @@ We used the error between the actual and expected pose values.
     write here
 </p>
 
-<h2>What’s next</h2>
-<!-- <p>What is your plan until the final project due date? What methods and experiments do you plan on running?
+<h2>Results</h2>
+
+<h3>Baseline</h3>
+<!--■	How do prior works perform on this task? It’s best to have a quantitative comparison 
+  using your metric for success. If that is not possible, a qualitative result will suffice. 
+■	You are required to have at least one comparison-->
+
+<h3>Key Result</h3>
+<!--■	Clearly present your key result. This should include both your performance according to your 
+  metric of success defined above and a qualitative output example from your system. -->
+<!--■	Specify what variants of your approach you tried to make progress towards finding a solution. 
+■	Ultimately, describe your final results. Did your approach work? If not, explain why you 
+believe it did not. 
+-->
+
+<h2>Discussion</h2>
+<!--○	Provide a reflective paragraph about your project. Summarize what you accomplished, 
+  what you learned, and what remains for future works. -->
+  With this project, a comparison of different segmentation and tracking algorithms was accomplished.
+  Over the course of this project, we learned how to implement a variety of computer vision
+  algorithms and strategies. We were able to employ concepts we learned about in class to 
+  solve a real-world problem. We used concepts including color spaces, filtering, thresholding,
+  blob detection, SIFT, and learning. We also became more comfortable with computer vision
+  and learning tools including OpenCV and Pytorch. In the future, we could try the strategies
+  from this project with other endoscopes and tools.
+
+<h2>Challenges Encountered</h2>
+<!--○	What challenges did your team encounter throughout the project?
+○	If you were to start over today, is that a different strategy you would take 
+to make progress on your overall problem statement?-->
+We initially spent a lot of time working on classical techniques for doing segmentation and
+tracking, with mediocre results. A learning approach is probably better at capturing the 
+nuances of the image and is more reliable overall. If we were to do this project again, we
+might have started with learning right away and saved more time to fine tune our 
+model architecture. 
+
+
+<!-- <h2>What’s next</h2>
+<p>What is your plan until the final project due date? What methods and experiments do you plan on running?
 ○	Note: Include a task list (can use a table) indicating each step you are planning and anticipated completion date.
-  The next we would try combining classical approaches and learning based medthods. -->
+  The next we would try combining classical approaches and learning based medthods.
 <p>
     <li>Combine color segmentation with key features for tracking tool tip -  March 27 - April 2</li>
 
@@ -429,9 +466,9 @@ We used the error between the actual and expected pose values.
             <li> Use regularization to prevent overfitting. </li>
         </ul>
     </li>
-</p>
+</p> -->
 
-<h2>Team member contributions</h2>
+<h2>Team Member Contributions</h2>
 <!-- <p>
   Indicate what you anticipate each team member will contribute by the final project submission.
 ○	Note: List every member name and their corresponding tasks in bullet points – or you may simply assign team member names to the task list you created above.
@@ -459,7 +496,7 @@ We used the error between the actual and expected pose values.
             <li>Set up repository</li>
             <li>Make website template</li>
             <li>Write utility code for loading data</li>
-            <li>Write the main architecture of the program</li>
+            <li>Write the main architecture of the program for classical approaches</li>
             <li>Write utility code for visualizing results</li>
             <li>Experiment with color-based segmentation</li>
             <li>Experiment with the classical tracking approach</li>
