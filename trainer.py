@@ -3,9 +3,12 @@ import os
 import matplotlib.pyplot as plt
 import torch.utils
 from torch.autograd import Variable
-from torchvision.datasets import ImageFolder
+#from torchvision.datasets import ImageFolder
+from VideoDataset import VideoDataset
+import torchvision.transforms as transforms
 from load_data import *
-from loss import compute_loss
+from ML_utils import *
+import numpy as np
 
 
 class Trainer:
@@ -15,7 +18,8 @@ class Trainer:
 
     def __init__(
         self,
-        data_dir,
+        train_dir,
+        test_dir,
         model,
         optimizer,
         model_dir,
@@ -25,6 +29,7 @@ class Trainer:
         load_from_disk=True,
         cuda=False,
     ):
+        print("Trainer __init__ ")
         self.model_dir = model_dir
 
         self.model = model
@@ -35,15 +40,19 @@ class Trainer:
 
         dataloader_args = {"num_workers": 1, "pin_memory": True} if (cuda) else {}
 
-        self.train_dataset = ImageFolder(os.path.join(data_dir, "train"), transform=train_data_transforms)
+        self.train_dataset = VideoDataset(train_dir,train_data_transforms) # ImageFolder(os.path.join(data_dir, "train"), transform=train_data_transforms)
         self.train_loader = torch.utils.data.DataLoader(
             self.train_dataset, batch_size=batch_size, shuffle=True, **dataloader_args
         )
+        print("Trainer train_loader loaded")
+        #self.train_data_transforms = train_data_transforms
 
-        self.test_dataset = ImageFolder(os.path.join(data_dir, "test"), transform=test_data_transforms)
+        self.test_dataset = VideoDataset(test_dir,test_data_transforms) #ImageFolder(os.path.join(data_dir, "test"), transform=test_data_transforms)
         self.test_loader = torch.utils.data.DataLoader(
             self.test_dataset, batch_size=batch_size, shuffle=True, **dataloader_args
         )
+        print("Trainer test_loader loaded")
+        #self.test_data_transforms = test_data_transforms
 
         self.optimizer = optimizer
 
@@ -64,6 +73,7 @@ class Trainer:
         """
         Saves the model state and optimizer state on the dict
         """
+        print("Trainer save_model")
         torch.save(
             {"model_state_dict": self.model.state_dict(), "optimizer_state_dict": self.optimizer.state_dict()},
             os.path.join(self.model_dir, "checkpoint.pt"),
@@ -73,10 +83,11 @@ class Trainer:
         """
         The main train loop
         """
+        print("Trainer train")
         self.model.train()
 
-        train_loss, train_acc = self.evaluate(split="train")
-        val_loss, val_acc = self.evaluate(split="test")
+        train_loss = self.evaluate(split="train")
+        val_loss = self.evaluate(split="test")
 
         self.train_loss_history.append(train_loss)
         self.train_accuracy_history.append(train_acc)
@@ -94,8 +105,6 @@ class Trainer:
             for _, batch in enumerate(self.train_loader):
                 if self.cuda:
                     input_data, target_data = Variable(batch[0]).cuda(), Variable(batch[1]).cuda()
-                elif (self.is_mps):
-                    input_data, target_data = Variable(batch[0]).to('mps'), Variable(batch[1]).to('mps')
                 else:
                     input_data, target_data = Variable(batch[0]), Variable(batch[1])
 
@@ -105,13 +114,13 @@ class Trainer:
                 loss.backward()
                 self.optimizer.step()
 
-            train_loss, train_acc = self.evaluate(split="train")
-            val_loss, val_acc = self.evaluate(split="test")
+            train_loss = self.evaluate(split="train")
+            val_loss = self.evaluate(split="test")
 
             self.train_loss_history.append(train_loss)
-            self.train_accuracy_history.append(train_acc)
+            #self.train_accuracy_history.append(train_acc)
             self.validation_loss_history.append(val_loss)
-            self.validation_accuracy_history.append(val_acc)
+            #self.validation_accuracy_history.append(val_acc)
 
             print(
                 "Epoch:{}, Training Loss:{:.4f}, Validation Loss:{:.4f}".format(
@@ -125,35 +134,35 @@ class Trainer:
         """
         Get the loss and accuracy on the test/train dataset
         """
+        print("Trainer evaluate ", split)
         self.model.eval()
 
         num_examples = 0
-        num_correct = 0
+        #num_correct = 0
         loss = 0
 
         for _, batch in enumerate(self.test_loader if split == "test" else self.train_loader):
             if self.cuda:
                 input_data, target_data = Variable(batch[0]).cuda(), Variable(batch[1]).cuda()
-            elif (self.is_mps):
-                input_data, target_data = Variable(batch[0]).to('mps'), Variable(batch[1]).to('mps')
             else:
                 input_data, target_data = Variable(batch[0]), Variable(batch[1])
 
             output_data = self.model(input_data)
 
             num_examples += input_data.shape[0]
-            loss += float(compute_loss(self.model, output_data, target_data, is_normalize=False))
-            predicted_labels = predict_labels(output_data)
-            num_correct += torch.sum(predicted_labels == target_data).cpu().item()
+            loss += float(compute_loss(self.model, output_data, target_data))
+            #predicted_labels = predict_labels(output_data)
+            #num_correct += torch.sum(predicted_labels == target_data).cpu().item()
 
         self.model.train()
 
-        return loss / float(num_examples), float(num_correct) / float(num_examples)
+        return loss / float(num_examples)#, float(num_correct) / float(num_examples)
 
     def plot_loss_history(self):
         """
         Plots the loss history
         """
+        print("Trainer plot_loss_history")
         plt.figure()
         ep = range(len(self.train_loss_history))
 
@@ -165,17 +174,17 @@ class Trainer:
         plt.xlabel("Epochs")
         plt.show()
 
-    def plot_accuracy(self):
-        """
-        Plots the accuracy history
-        """
-        plt.figure()
-        ep = range(len(self.train_accuracy_history))
-        plt.plot(ep, self.train_accuracy_history, "-b", label="training")
-        plt.plot(ep, self.validation_accuracy_history, "-r", label="validation")
-        plt.title("Accuracy history")
-        plt.legend()
-        plt.ylabel("Accuracy")
-        plt.xlabel("Epochs")
-        plt.show()
+    #def plot_accuracy(self):
+    #    """
+    #    Plots the accuracy history
+    #    """
+    #    plt.figure()
+    #    ep = range(len(self.train_accuracy_history))
+    #    plt.plot(ep, self.train_accuracy_history, "-b", label="training")
+    #    plt.plot(ep, self.validation_accuracy_history, "-r", label="validation")
+    #    plt.title("Accuracy history")
+    #    plt.legend()
+    #    plt.ylabel("Accuracy")
+    #    plt.xlabel("Epochs")
+    #    plt.show()
 

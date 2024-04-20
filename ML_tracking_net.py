@@ -8,7 +8,7 @@ class TrackNet(nn.Module):
         Init function to define the layers and loss function
         """
         super().__init__()
-
+        print("TrackNet __init__ ")
         self.conv_layers = nn.Sequential()
         self.fc_layers = nn.Sequential()
         self.loss_criterion = None
@@ -27,11 +27,11 @@ class TrackNet(nn.Module):
         #self.fc_layers.append(nn.Dropout(p=0.5))
         self.fc_layers.append(nn.Linear(420,84))
         #self.fc_layers.append(nn.Dropout(p=0.5))
-        self.fc_layers.append(nn.Linear(84,12))
+        self.fc_layers.append(nn.Linear(84,14))
 
         self.loss_criterion = nn.MSELoss(reduction='mean')
 
-    def make_2D_block(in_planes, out_planes, kernel):
+    def make_2D_block(self, in_planes, out_planes, kernel):
         return nn.Sequential(
                 nn.Conv2d(in_planes,out_planes,kernel),
                 nn.MaxPool2d((3,3)),
