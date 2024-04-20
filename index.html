@@ -273,7 +273,7 @@ The input was the endoscopic camera video from the EndoVis 15 dataset described 
 The desired output is a binary image the same size as the original image. True pixels correspond
 to the tool in the image. 
 <hv>Success metric</hv>
-Intersection Over Union was used to measure success, comparing our segmentation to the ground-truth 
+Intersection Over Union and the DICE coefficient (double intersection over total area) were used to measure success, comparing our segmentation to the ground-truth 
 segmentation provided by EndoVis. 
 
 <h4>Strategies</h4>
@@ -345,7 +345,8 @@ The desired output is a 1x7 array with the following values:
 
 to the tool in the image. 
 <hv>Success metric</hv>
-We used the error between the actual and expected pose values. 
+We used the error between the actual and expected pose values.  We also took particular notice of the Euclidean distance between the true and estimated tracked point
+because that is the evaluation criterion used in the EndoVis competition.
 
 <h4>Strategies</h4>
   <h5>Classical Tracking Method</h5>
