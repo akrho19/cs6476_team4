@@ -8,6 +8,7 @@
   Note:  Please include 1-3 paragraphs for this section. Diagrams, visuals, and/or showing example data 
   can be highly effective to aid in telling your story.
   <br><br> -->
+  <h3>High Level Description and Motivation</h3>
   Minimally invasive surgery often requires working in areas that are not visible to the surgeon. 
   There are multiple techniques for helping the surgeon visualize his or her surgical tools in relation 
   to the anatomy. X-Ray flouroscopy can be used; however, this exposes healthcare professionals to radiation. 
@@ -28,6 +29,26 @@
   By obtaining the position and configuration of the surgical tool relative to the surrounding 
   tissue several surgical procedural parts can be semi-automated using closed-loop control. However, the task is not without challenges. The image quality of endoscope 
   cameras tends to be poor and distorted, and stereo images are usually not available. 
+  <h3>Specific Problem Definition</h3>
+  For this project, we will attempt two main tasks, outlined as follows. 
+  <h4>Segmentation</h4>
+  The segmentation task involves determining which pixels in an endoscope camera still frame are 
+  associated with the robotic surgical tool. The segmentation task is perhaps
+  not particularly useful on its own, but may be helpful for pose estimation.
+  <h4>Tracking/Pose Estimation</h4>
+  The first step towards image based robotic control is pose tracking. For the scope of this project,
+  we will track four properties of each tool in the frame.
+  <ul>
+    <li>Tracked point: A pixel location on the tool at the joint between the shaft and the head</li>
+    <li>Shaft axis: A 2D vector representing the orientation of the tool shaft</li>
+    <li>Head axis: A 2D vector representing the orientation of the tool head</li>
+    <li>Clasper angle: An angle representing how wide the tool claspers are open</li>
+  </ul>
+  
+  <img src="guide.png" style="width:50%">
+  <br>
+  Image source: EndoVis 15
+
 </p>
 
 <h2>Related Works</h2>
@@ -113,6 +134,11 @@ Medical Image Analysis, Volume 67, 2021.
     for shared-encoder and task-aware decoders.
   </blockquote>
 
+<h3>Our Project in Context</h3>
+We are all new to computer vision, so we do not expect to develop novel or state of the art approaches for
+this task. However, unlike previous papers which tend to focus on a single method, we will investigate a
+variety of methods for tool segmentation and tracking and provide side by side results.
+
 <h2>Methods/Approach</h2>
 <!-- <p>Indicate algorithms, methodologies, or approaches you used to craft your solution. What was the reasoning or intuition for trying each methodology/algorithm. What does the overall pipeline look like and the details behind each component? Make sure to establish any terminology or notation you will continue to use in this section. 
 ○	Note: Your methods and approaches may change through development, so in your project update, feel free to discuss all approaches you tried out! We expect at least 1 method/approach attempted.
@@ -120,19 +146,27 @@ Medical Image Analysis, Volume 67, 2021.
 
 <h3>Segmentation</h3>
 
+  For the segmentation task, we tried several different approaches, outlined below. 
+
   <h4>Color Based Segmentation</h4>
   <p>
     As a first try, this very simple and naiive algorithm was used to segment the 
     images. Most tissues inside the body are red in color, leading to our hypothesis
     that selecting all the non-red pixels in an image might be a good first attempt at
     segmentation.
-    <br><br>
+    <br>
+    <img src="amber_segmentation_figure.png" style="width:50%">
+    <br>
     First, a gaussian blur was applied to the image to remove high frequency noise. 
     Next, the frame was converted into the HSV color space. A mask was created such that 
     all the non-red pixels were true. Next, morphological operations erosion and dilation were 
     preformed to remove small speckles in the mask and join together larger non-red regions. 
     Then, the area with the largest number of connected "true" pixels was found, and all other
     "true" areas were discarded. 
+    <br>
+    <img src="amber_segmentation_procedure.png" style="width:80%">
+
+    
   </p>
 
   <h4>Blob Detection Based Segmentation Method</h4>
@@ -159,6 +193,8 @@ Medical Image Analysis, Volume 67, 2021.
     We attempt on using some information from detecting the keypoints for obtaining a good tip detection of the tool while tracking the pose. For segmentation though,
     this approach needs to be combined with another approach to get good results.
   </p>
+
+
 
 <h3>Tracking</h3>
 
@@ -193,17 +229,46 @@ Medical Image Analysis, Volume 67, 2021.
     write here
   </p>
 
+<h3>Contribution</h3>
+  While none of our approaches are novel, we contribute by providing a side by side comparison to show which are
+  applicable in this problem domain and which are not. 
+
+<h3>Intuition</h3>
+  By experimenting with many different methods, we can find at least one
+  method that is suitable for our task. We predict that the more classical approaches will work well
+  for the data we have, but might be harder to generalize to other lighting conditions and styles of tools. 
+  The learning approaches are more likely to be generalizable. 
+
+
 <h2>Experiments / Results</h2>
 <!-- <p>Describe what you tried and what datasets were used. We aren’t expecting you to beat state of the art, but we are interested in you describing what worked or didn’t work and to give reasoning as to why you believe so. Compare your approach against baselines (either previously established or you established) in this section. Provide at least one qualitative result (i.e. a visual output of your system on an example image). 
 ○	Note: For the project update, feel free to discuss what worked and didn’t work. Why do you think an approach was (un)successful? We expect you to have dealt with dataset setup and completed at least 1 experimental result by the project update.
 </p> -->
 <p>
-  We used the <a href="https://opencas.webarchiv.kit.edu/?q=node/30">EndoVis 15 dataset,</a> which provides endoscope views of robotics tools. 
-  It also provides ground truth data for both tracking and segmentation tasks. 
+  We used the <a href="https://endovissub-instrument.grand-challenge.org/Data/">EndoVis 15 dataset,</a> which provides endoscope views of robotics tools. 
+  It also provides ground truth data for both tracking and segmentation tasks. There are 6 videos in the 
+  test dataset. Each frame is 720x576 pixels and there is a total of 2:45 minutes of video to test on. 
+  The dataset is pre-divided into test and train segments. For both test and train, ground truth segmenation
+  and instrument pose are provided. 
+
 </p>
 
-<h4>Color Based Segmentation</h4>
+<h3>Segmentation</h3>
+
+<h4>Input</h4>
+The input was the endoscopic camera video from the EndoVis 15 dataset described above. 
+<h4>Desired Output</h4>
+The desired output is a binary image the same size as the original image. True pixels correspond
+to the tool in the image. 
+<hv>Success metric</hv>
+Intersection Over Union was used to measure success, comparing our segmentation to the ground-truth 
+segmentation provided by EndoVis. 
+
+<h4>Strategies</h4>
+<h5>Color Based Segmentation</h5>
   <p>
+    We gave the test data from the EndoVis dataset to the color based segmentation algorithm and recorded
+    the Intersection Over Union metric for each frame of the test data video. 
     This algorithm worked suprisingly ok considering how basic it is.
     However, it does have some
     shortcomings. The threshold for what is considered "red" was chosen manually and may not be 
@@ -216,7 +281,7 @@ Medical Image Analysis, Volume 67, 2021.
   <br>
   <img src="color_segmentation_iou.png" style="width:50%">
 
-  <h4>Blob Detection Based Segmentation Method</h4>
+  <h5>Blob Detection Based Segmentation Method</h5>
   <p>
       The use of the blob detection algorithm for identifying circle-like features in the image frames
       did not work very well at all. Because of the the large blob size, it was necessary to use a
@@ -226,7 +291,7 @@ Medical Image Analysis, Volume 67, 2021.
   </p>
   <img src="blob_failure_evidence.png" style="width:50%">
 
-  <h4>SIFT for segmentation</h4>
+  <h54>SIFT for segmentation</h5>
   <p>
     This algorithm works well for detecting the tool tip region in some cases but fails to detect the shaft of the tool. Need to combine with another approach for better results for segmentation. For tracking the features are matched well in different frames. 
     We can use optical flow later to detect the features with move withing frames for tracking.
@@ -245,7 +310,26 @@ Medical Image Analysis, Volume 67, 2021.
 
 <h3>Tracking</h3>
 
-  <h4>Classical Tracking Method</h4>
+<h4>Input</h4>
+The input was the endoscopic camera video from the EndoVis 15 dataset described above. 
+<h4>Desired Output</h4>
+The desired output is a 1x7 array with the following values:
+<ul>
+  <li>center_point _x & center_point_y: Pixel coordinates of the center point for
+    instrument, the center point is defined as the intersection between the instrument axis
+    and the border between metal and plastic on the shaft.</li>
+  <li>shaft_axis_x & shaft_axis_y: Normalized axis vector of instrument</li>
+  <li>head_axis_x & head_axis_y: Normalized axis vector of instrument head</li>
+  <li>clasper_angle: The angle in degrees between the claspers.</li>
+</ul>
+
+to the tool in the image. 
+<hv>Success metric</hv>
+Intersection Over Union was used to measure success, comparing our segmentation to the ground-truth 
+segmentation provided by EndoVis. 
+
+<h4>Strategies</h4>
+  <h5>Classical Tracking Method</h5>
   <p>
     The average errors, in pixels, were:
     <ul>
@@ -290,12 +374,12 @@ Medical Image Analysis, Volume 67, 2021.
     
   </p>
 
-<h4>Cloud's Tracking Method</h4>
+<h5>Cloud's Tracking Method</h5>
   <p>
     write here
   </p>
 
-  <h4>Nidhi's Tracking Method</h4>
+  <h5>Nidhi's Tracking Method</h5>
   <p>
     write here
   </p>
