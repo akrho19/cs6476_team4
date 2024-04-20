@@ -94,7 +94,7 @@ def tracking():
         # print(left_shaft)
         # print(np.shape(left_shaft))
 
-        right_error = [(abs(g) - abs(t)) for g, t in zip(right_guess, right_truth)]
+        right_error = list(get_tracking_error(right_truth, right_guess))#[(abs(g) - abs(t)) for g, t in zip(right_guess, right_truth)]
         errors.append(right_error)
 
         # Display annotated frame
@@ -114,13 +114,13 @@ def tracking():
             break
 
         if left_truth is not None:
-            left_error = [(abs(g) - abs(t)) for g, t in zip(left_guess, left_truth)]
+            left_error = list(get_tracking_error(left_truth, left_guess))#[(abs(g) - abs(t)) for g, t in zip(left_guess, left_truth)]
             errors.append(left_error)
 
     # Report the overall accuracy
     errors = np.vstack(errors)
-    labels = ["tracked_point_x", " tracked_point _y", "shaft_axis_x", "shaft_axis_y", \
-                "head_axis_x", "head_axis_y", "clasper_angle"] # TODO: Uncomment if you'd like to try with clasper_angle
+    labels = ["tracked_point_x", " tracked_point_y", "shaft_axis_angle", "head_axis_angle", "clasper_angle"]#"shaft_axis_x", "shaft_axis_y", \
+                #"head_axis_x", "head_axis_y"]#, "clasper_angle"] # TODO: Uncomment if you'd like to try with clasper_angle
     make_histograms(errors, labels, xlim=None, n_bins=20, xlabel=["Error [Pixels]"], ylabel=["Count"])
 
 

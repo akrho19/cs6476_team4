@@ -227,14 +227,15 @@ variety of methods for tool segmentation and tracking and provide side by side r
 </p>
 
 <h4>Machine Learning Based Tracking</h4>
+<img src="tracking_network_diagram.png" style="width:35%">
 <p>
     We trained also attempted a learning approach for estimating the tool poses in the frame of the image.  We used a convolutional neural network that inputs the three
     channel image and outputs the 7 pose values for each tool.  Our network consists of 4 blocks, where each block contains a convolution followed by a 3x3 max pool and a ReLU
     nonlinear activation.  We used kernels of size 3x10x10, 7x7, 5x3, and 5x5, in that order.  The first convolution was a three dimensional convolution of depth 3 in order to
     bring the 3-channel image into a 1-channel format without just throwing away the color data by converting to grayscale first, considering the success of segmentation using
     color so far.  After the convolution, we flattened the data and passed through three fully connected linear layers to bring it down to the 1x14 size that we desired.
-    We also included dropouts of p=0.1 after the colvolutional blocks and of p=0.5 in between the fully connected layers.  The model was trained using an Adam optimizer
-    at a learning rate of 1e-3 with an 8e-4 weight decay with a batch size of 30 and 30 epochs.
+    This 1x14 array can be split into the two tool poses which are length 7 each.  We also included dropouts of p=0.1 after the colvolutional blocks and of p=0.5 in between the
+    fully connected layers.  The model was trained using an Adam optimizer at a learning rate of 1e-3 with an 8e-4 weight decay with a batch size of 30 and 30 epochs.
 </p>
 
 <h4>Nidhi's Tracking Method</h4>
@@ -394,13 +395,31 @@ segmentation provided by EndoVis.
 
 <h4>Machine Learning Tracking Approach</h4>
 <p>
+    The average errors, in pixels, were:
+    <ul>
+        <li>tracked point x RMS Error: 93.829153 pixels (12.33% of image width)</li>
+        <li>tracked point y RMS Error: 81.784727 pixels (11.42% of image height)</li>
+        <li>shaft angle RMS Error: 49.777792 degrees</li>
+        <li>head angle RMS Error: 22.205741 degrees</li>
+    </ul>
+    <br>
+    For comparison, the total size of the images were 720x576 pixels.
+    <br>
+    However, the model is optimized around the mean squared error, so using this as the metric for evaluation is somewhat biased.
+    So we additionally present the median absolute error:
 
+    <ul>
+        <li>tracked point x Median Error: 51.458116 pixels (7.15% of image width)</li>
+        <li>tracked point y Median Error: 54.509924 pixels (9.46% of image height)</li>
+        <li>shaft angle Median Error: 4.996736 degrees</li>
+        <li>head angle Median Error: 14.338042 degrees</li>
+    </ul>
+    <br>
+    <img src="learning_based_tracking_plots.png" style="width:50%">
+    <br>
 </p>
 
-  <h5>Nidhi's Tracking Method</h5>
-  <p>
-    write here
-</p>
+  
 
 <h2>What’s next</h2>
 <!-- <p>What is your plan until the final project due date? What methods and experiments do you plan on running?
