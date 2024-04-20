@@ -323,7 +323,18 @@ segmentation provided by EndoVis.
 
 <h4>Machine Learning Based Segmentation</h4>
 <p>
-
+We attempt segmenting the left surgical instrument from the video frame. One video frame is used and split for the training and validation data. Post training, a different video is used to test the performance of the trained model.
+We use a UNET model, following the approach in 1 , for our dataset. The baseline model is trained on our dataset and we evaluate the performance of the model. The architecture of the UNET is shown below.
+ <img src="unet_arch.png" style="width:50%">
+Description of architecture: The UNET model is commonly used for biomedical datasets. It has an encoder-decoder architecture. The “encoder” extracts the features and captures the context of the scene. The “decoder” generates a segmentation map for accurate localization of the features. This is achieved by the encoder reducing the spatial dimensions of the input image and increasing the number of feature channels, while the decoder would increase the spatial dimensions of the feature maps. 
+In the model the “jaccard distance” which gives the intersection over union is used as the loss function to train the model. 
+Different optimizers – “adam”, “sgd”, “rmsprop”, “adamax” are tried to compare the accuracy. 
+ <img src="iou_opt.png" style="width:50%">
+Since, the model overfits the training dataset, different dropout parameters – 0.1 0.6 are compared.
+We obtain a 99.5% train accuracy, 78% test accuracy for the best trained model. The loss and accuracy during training is shown for the best trained model.
+ <img src="test_loss.png" style="width:50%">
+  The input, mask and segmented image for a test case is also shown below.
+   <img src="unet_final_output.png" style="width:50%">
 </p>
 
 <h3>Tracking</h3>
