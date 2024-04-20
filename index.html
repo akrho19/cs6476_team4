@@ -166,16 +166,19 @@ Medical Image Analysis, Volume 67, 2021.
   <p>
     An attempt was made to recover six of the seven tracking values using only traditional CV methods (without learning.) The following algorithms were used to recover each item. 
     <ul>
-      <li>tracked_point_x and tracked_point_y: The location of the "tracked point" is the point where the dark colored shaft and the light colored 
-        head meet. The image was first segmented to recover the whole tool and the head alone. The head was subtracted from the whole tool to obtain the shaft alone. 
+      <li>tracked point: The location of the "tracked point" is the point where the dark colored shaft and the light colored 
+        head meet. The image was first segmented to recover the whole tool (see above). The head was then segmented out from the tool. Since the head and shaft are similar colors, 
+        segmentation by color could not be used. Instead, it was noted that the tool head has many more edges than the shaft. Canny edge detection was used to highlight all the edges
+        on the tool. Morphological dilation and erosion of the edges was then performed to create an approximation of the shape of the head. 
+        The head mask was subtracted from the whole tool to obtain the shaft alone. 
         Then, morphological dilation was used on the shaft mask. Next, a logical AND was applied to find the overlap between the shaft and the head. Finally, the 
         centroid of this overlap region was found. The centroid became our approximation for the tracked point. </li>
-      <li>shaft_axis_x, shaft_axis_y:  These values represent a cartesian unit vector indicating the orientation of the tool shaft. The image was first segmented to recover 
-        the whole tool and the head alone. The head was subtracted from the whole tool to obtain the shaft alone. Root mean square was used to find the line that best fit
-      the shaft mask. The slope of this line was used to compute the values of the unit vector (shaft_axis_x, shaft_axis_y) </li>
-      <li>head_axis_x, head_axis_y:  These values represent a cartesian unit vector indicating the orientation of the tool head. The image was first segmented to recover 
-        the the head alone. Root mean square was used to find the line that best fit
-      the head mask. The slope of this line was used to compute the values of the unit vector (head_axis_x, head_axis_y)</li>
+      <li>shaft axis:  These values represent a cartesian unit vector indicating the orientation of the tool shaft. The image was first segmented to recover 
+        the whole tool. Root mean square was used to find the line that best fit the mask. The vector representing the slope of the best fit line was computed. 
+        In the results section below, the angle difference between the ground truth and computed vector are reported.  </li>
+      <li>head_axis:  These values represent a cartesian unit vector indicating the orientation of the tool head. The image was first segmented to recover 
+        the the head alone. Root mean square was used to find the line that best fit the head mask. The vector representing the slope of the best fit line was computed. 
+        In the results section below, the angle difference between the ground truth and computed vector are reported.</li>
       <li>clasper_angle: Reconstructing this value was not attempted using this method.</li>
     </ul>
   </p>
@@ -242,24 +245,48 @@ Medical Image Analysis, Volume 67, 2021.
 
 <h3>Tracking</h3>
 
-  <h4>Color Based Tracking Method</h4>
+  <h4>Classical Tracking Method</h4>
   <p>
     The average errors, in pixels, were:
     <ul>
-      <li>tracked_point_x Average: -191.366304</li>
-      <li>tracked_point _y Average: 66.820536</li>
-      <li>shaft_axis_x Average: -0.029694</li>
-      <li>shaft_axis_y Average: -0.041825</li>
-      <li>head_axis_x Average: -0.276321</li>
-      <li>head_axis_y Average: 0.111984</li>
+      <li>tracked point x RMS Error: 217.443041 pixels (30.20% of image width)</li>
+      <li>tracked point y RMS Error: 107.676291 pixels (18.69% of image height)</li>
+      <li>shaft angle RMS Error: 72.999660 degrees</li>
+      <li>head angle RMS Error: 50.790612 degrees</li>
+    </ul>
+    <br>
+    For comparison, the total size of the images were 720x576 pixels. 
+    <br>
+    However, the averages could be pulled high by the frames when the model really was confused, even though it was accurate most of the time. 
+    So we additionally present the median absolute error:
+
+    <ul>
+      <li>tracked point x Median Error: 36.381992 pixels (5.05% of image width)</li>
+      <li>tracked point y Median Error: 40.129398 pixels (6.97% of image height)</li>
+      <li>shaft angle Median Error: 4.996736 degrees</li>
+      <li>head angle Median Error: 14.338042 degrees</li>
     </ul>
 
     <br>
     <img src="color_tracking_histograms.png" style="width:50%">
-    
+    <br>
     Finding the grasper angle was not attempted using this method. 
-
-    Overall, this method performed very well for finding the orientation of the shaft. However, it did not perform well for finding the "tracked point". 
+    <br>
+    Overall, this method was somewhat hit or miss. The median error was relatively small - less than 10% of the image height. 
+    However, the mean error was much larger, indicating that sometimes when the model was wrong, it was really wrong. 
+    <br>
+    In the following image, 
+    <ul>
+      <li>Magenta: Guess for the left tool tracked point</li>
+      <li>Cyan: Ground truth for the left tool tracked point</li>
+      <li>Yellow: Guess for the right tool tracked point</li>
+      <li>White: Ground truth for the right tool tracked point</li>
+      <li>Blue line: Head axis</li>
+      <li>Red line: Shaft axis</li>
+    </ul>
+    
+    
+    <img src="classical_tracking_screenshot.PNG" style="width:50%">
     
   </p>
 
@@ -331,8 +358,7 @@ Medical Image Analysis, Volume 67, 2021.
       <li>Write the main architecture of the program</li>
       <li>Write utility code for visualizing results</li>
       <li>Experiment with color-based segmentation</li>
-      <li>TODO: experiment with a tracking approach</li>
-      <li>TODO: Experiment with a learning approach</li>
+      <li>Experiment with the classical tracking approach</li>
     </ul>
   </li>
 </ul>
