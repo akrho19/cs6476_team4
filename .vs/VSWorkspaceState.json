@@ -1,9 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\Tracking_train\\Training",
-    "\\Tracking_train\\Training\\Dataset1"
+    ""
   ],
-  "SelectedNode": "\\main.py",
+  "SelectedNode": "\\ML_tracking_model.py",
   "PreviewInSolutionExplorer": false
 }

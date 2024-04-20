@@ -77,10 +77,10 @@ def training():
     print("ML_tracking_model training")
     mean, std = compute_mean_and_std("Tracking_train")
     model = TrackNet()
-    optimizer_config = {"optimizer_type":"adam", "lr":3e-3, "weight_decay":2e-3}
+    optimizer_config = {"optimizer_type":"adam", "lr":1.0e-3, "weight_decay":6e-4}
     optimizer = get_optimizer(model, optimizer_config)
     fundamental_transforms = get_fundamental_transforms((576,720),mean,std)
-    model_base_path = '../model_checkpoints/'
+    model_base_path = 'model_checkpoints\\'
 
     trainer_instance = Trainer(train_dir="Tracking_train",
                                   test_dir="Tracking_test",
@@ -103,7 +103,7 @@ def training():
 def model_tracking_by_ML(frame):
 
     model = TrackNet()
-    model.load_state_dict(torch.load('../model_checkpoints/checkpoint.pt'))
+    model.load_state_dict(torch.load('model_checkpoints\\tracking_net\\checkpoint.pt'))
     model.eval()
 
     pose = model(get_fundamental_transforms()(Image.fromarray(frame))).tolist()
@@ -116,5 +116,5 @@ def model_tracking_by_ML(frame):
 if __name__ == "__main__":
     print("ML_tracking_model main")
     trainer_instance = training()
-    trainer_instance.plot_accuracy()
+    #trainer_instance.plot_accuracy()
     trainer_instance.plot_loss_history

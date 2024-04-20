@@ -89,7 +89,7 @@ def tracking():
 
         # TODO test the model here        
         #left_guess, right_guess = model_tracking_by_sift(frame) # TODO make this model!
-        left_guess, right_guess = model_tracking_by_color(frame)
+        left_guess, right_guess = model_tracking_by_ML(frame)
 
         # print(left_shaft)
         # print(np.shape(left_shaft))
