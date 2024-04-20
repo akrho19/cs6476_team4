@@ -324,7 +324,7 @@ segmentation provided by EndoVis.
   <p>
     <li>Different optimizers – “adam”, “sgd”, “rmsprop”, “adamax” are tried to compare the accuracy. </li>
     <img src="iou_opt.png" style="width:50%">
-    <li>We obtain a 99.5% train accuracy, 78% test accuracy for the best trained model. The loss and accuracy during training is shown for the best trained model.</li>
+    <li>We obtain a 99.5% train accuracy, 78% test accuracy for the best trained model. The loss and accuracy during training is shown for the best trained model. The dice score for the model was 87.5% but the training and testing was done only for the left instrument in the scene on 1/5 datasets due to compute resource constraints. </li>
     <img src="model_loss_and_accuracy.png" style="width:50%">
     <li>The input, mask and segmented image for a test case is also shown below.</li>
     <img src="unet_final_output.png" style="width:50%">
