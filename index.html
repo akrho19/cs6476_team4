@@ -16,7 +16,7 @@
   This camera gives the physician a real time view of his or her surgical tools without the drawbacks of other imaging modalities. 
   Meanwhile, robotics has found its way into operating rooms. Commercially available platforms such as the DaVinci and Rosa robots 
   have already been used in surgery, and many new devices are under development. These robotic surgical tools give physicians greater
-  dexterity and may even assist in path planning, compensate for the surgon's unwanted hand motion, or allow surgeons to conduct surgeries
+  dexterity and may even assist in path planning, compensate for the surgeon's unwanted hand motion, or allow surgeons to conduct surgeries
   remotely. 
   <br><br>
   As minimally invasive surgeries incorporate more and more robotics, endoscope cameras have become an attractive option for providing imaging feedback to the surgeon.
@@ -229,7 +229,7 @@ variety of methods for tool segmentation and tracking and provide side by side r
 <h4>Machine Learning Based Tracking</h4>
 <img src="tracking_network_diagram.png" style="width:50%">
 <p>
-    We trained also attempted a learning approach for estimating the tool poses in the frame of the image.  We used a convolutional neural network that inputs the three
+    We also attempted a learning approach for estimating the tool poses in the frame of the image.  We used a convolutional neural network that inputs the three
     channel image and outputs the 7 pose values for each tool.  Our network consists of 4 blocks, where each block contains a convolution followed by a 3x3 max pool and a ReLU
     nonlinear activation.  We used kernels of size 3x10x10, 7x7, 5x3, and 5x5, in that order.  The first convolution was a three dimensional convolution of depth 3 in order to
     bring the 3-channel image into a 1-channel format without just throwing away the color data by converting to grayscale first, considering the success of segmentation using
@@ -273,7 +273,7 @@ The input was the endoscopic camera video from the EndoVis 15 dataset described 
 The desired output is a binary image the same size as the original image. True pixels correspond
 to the tool in the image. 
 <hv>Success metric</hv>
-Intersection Over Union was used to measure success, comparing our segmentation to the ground-truth 
+Intersection Over Union and the DICE coefficient (double intersection over total area) were used to measure success, comparing our segmentation to the ground-truth 
 segmentation provided by EndoVis. 
 DICE score was used as an alternative measure of success.
 
@@ -348,7 +348,8 @@ The desired output is a 1x7 array with the following values:
 
 to the tool in the image. 
 <hv>Success metric</hv>
-We used the error between the actual and expected pose values. 
+We used the error between the actual and expected pose values.  We also took particular notice of the Euclidean distance between the true and estimated tracked point
+because that is the evaluation criterion used in the EndoVis competition.
 
 <h4>Strategies</h4>
   <h5>Classical Tracking Method</h5>
@@ -427,7 +428,9 @@ We used the error between the actual and expected pose values.
     <img src="learning_based_tracking_plots.png" style="width:50%">
     <br>
     Overall, this method was not very effective, as shown when watching the videos of the estimated pose in frame, where it is clear that the model gets pigeon holed
-    into always guessing close to a predicted average position for each video, and barely deviates from that position for any given frame.
+    into always guessing close to a predicted average position for each video, and barely deviates from that position for any given frame.  This revealed that our
+    neural network was most likely not deep enough to properly address the task.  However, unlike with segmentation, we were unaware of any ready-made networks
+    that we could use to solve this problem, so this method was left as is.
 </p>
 
   
