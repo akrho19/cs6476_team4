@@ -3,140 +3,141 @@
 <hr>
 <h2>Introduction/Problem Definition</h2>
 <p>
-  <!-- Provide a brief introduction to your project topic, and describe why it's an interesting topic to investigate. 
-  This is where you want to describe the problem itself and the motivation behind tackling it. 
-  Note:  Please include 1-3 paragraphs for this section. Diagrams, visuals, and/or showing example data 
-  can be highly effective to aid in telling your story.
-  <br><br> -->
-  Minimally invasive surgery often requires working in areas that are not visible to the surgeon. 
-  There are multiple techniques for helping the surgeon visualize his or her surgical tools in relation 
-  to the anatomy. X-Ray flouroscopy can be used; however, this exposes healthcare professionals to radiation. 
-  Magnetic Resonance Imaging (MRI) is another option, but this has several shortcomings. It is expensive. It restricts the movement of the 
-  surgeon, because the patient must be inside the bore of the MRI machine. Finally, no ferromagnetic surgical tools may be 
-  used near an MRI machine. Another option is ultrasound imaging, but it typically has low resolution and requires an expert 
-  sonographer to operate. 
-  <br><br>
-  As cameras have gotten smaller, it has become possible to put a small camera called an endoscope through the surgical aperature. 
-  This camera gives the physician a real time view of his or her surgical tools without the drawbacks of other imaging modalities. 
-  Meanwhile, robotics has found its way into operating rooms. Commercially available platforms such as the DaVinci and Rosa robots 
-  have already been used in surgery, and many new devices are under development. These robotic surgical tools give physicians greater
-  dexterity and may even assist in path planning, compensate for the surgon's unwanted hand motion, or allow surgeons to conduct surgeries
-  remotely. 
-  <br><br>
-  As minimally invasive surgeries incorporate more and more robotics, endoscope cameras have become an attractive option for providing imaging feedback to the surgeon.
-  Using this imaging feedback coupled with vision algorithms can help in surgical tool segmentation and tool tracking in the scene. 
-  By obtaining the position and configuration of the surgical tool relative to the surrounding 
-  tissue several surgical procedural parts can be semi-automated using closed-loop control. However, the task is not without challenges. The image quality of endoscope 
-  cameras tends to be poor and distorted, and stereo images are usually not available. 
+    <!-- Provide a brief introduction to your project topic, and describe why it's an interesting topic to investigate.
+    This is where you want to describe the problem itself and the motivation behind tackling it.
+    Note:  Please include 1-3 paragraphs for this section. Diagrams, visuals, and/or showing example data
+    can be highly effective to aid in telling your story.
+    <br><br> -->
+    Minimally invasive surgery often requires working in areas that are not visible to the surgeon.
+    There are multiple techniques for helping the surgeon visualize his or her surgical tools in relation
+    to the anatomy. X-Ray flouroscopy can be used; however, this exposes healthcare professionals to radiation.
+    Magnetic Resonance Imaging (MRI) is another option, but this has several shortcomings. It is expensive. It restricts the movement of the
+    surgeon, because the patient must be inside the bore of the MRI machine. Finally, no ferromagnetic surgical tools may be
+    used near an MRI machine. Another option is ultrasound imaging, but it typically has low resolution and requires an expert
+    sonographer to operate.
+    <br><br>
+    As cameras have gotten smaller, it has become possible to put a small camera called an endoscope through the surgical aperature.
+    This camera gives the physician a real time view of his or her surgical tools without the drawbacks of other imaging modalities.
+    Meanwhile, robotics has found its way into operating rooms. Commercially available platforms such as the DaVinci and Rosa robots
+    have already been used in surgery, and many new devices are under development. These robotic surgical tools give physicians greater
+    dexterity and may even assist in path planning, compensate for the surgon's unwanted hand motion, or allow surgeons to conduct surgeries
+    remotely.
+    <br><br>
+    As minimally invasive surgeries incorporate more and more robotics, endoscope cameras have become an attractive option for providing imaging feedback to the surgeon.
+    Using this imaging feedback coupled with vision algorithms can help in surgical tool segmentation and tool tracking in the scene.
+    By obtaining the position and configuration of the surgical tool relative to the surrounding
+    tissue several surgical procedural parts can be semi-automated using closed-loop control. However, the task is not without challenges. The image quality of endoscope
+    cameras tends to be poor and distorted, and stereo images are usually not available.
 </p>
 
 <h2>Related Works</h2>
 <!-- <p>
-  Describe related works in your problem space (research papers, libraries/tools, etc) for existing solutions for this problem or adjacent areas. Make sure to cite papers you reference! 
+  Describe related works in your problem space (research papers, libraries/tools, etc) for existing solutions for this problem or adjacent areas. Make sure to cite papers you reference!
   ○	Note: Related work should have between 2 to 6 sentences for each work citing. Please cite works following IEEE guidelines. Organize related work into different subsections based on similarity of approaches.
 </p> -->
 <h3>General CV Techniques in Medical Imaging</h3>
-  <p>
+<p>
     [1] Choudhary, A. (n.d.). Guidewire detection and 3D-Reconstruction for image-guided surgery. https://anic46.github.io/data/Guidewire_Project.pdf
-  </p>
-  <blockquote>This report was written by a previous masters student in our own lab as part of a special projects class several years ago. It provides a good overview of the 
-    challenges and strategies related to identifying pose of guidewires under X-ray. To identify the guidewire, the author first applied distortion, isocenter correction, 
-    histogram equalization, and smoothing to correct the X-ray images. He then applied a large median filter to remove the thin guidewire from the image, while also 
-    keeping an unfiltered copy. Next, he applied DoG and B-COSFIRE based filters to detect vessels in both image. He thresholded the output to obtain one mask from each image, 
-    then subtracted the masks from each other to obtain a mask with only the guidewire. Finally, he used curvelinear structure detection to highlight ridge structures to refine 
-    the segmentation of the guidewire. While developing this procedure, the author also tried some other approaches, which were found to be suboptimal. He tried using Meijering 
-    neuriteness, Sato tubeness, Frangi vesselness and Hessian vesselness filters to identify the vessels. He also attempted to use SIFT to identify guidewire features and track 
+</p>
+<blockquote>
+    This report was written by a previous masters student in our own lab as part of a special projects class several years ago. It provides a good overview of the
+    challenges and strategies related to identifying pose of guidewires under X-ray. To identify the guidewire, the author first applied distortion, isocenter correction,
+    histogram equalization, and smoothing to correct the X-ray images. He then applied a large median filter to remove the thin guidewire from the image, while also
+    keeping an unfiltered copy. Next, he applied DoG and B-COSFIRE based filters to detect vessels in both image. He thresholded the output to obtain one mask from each image,
+    then subtracted the masks from each other to obtain a mask with only the guidewire. Finally, he used curvelinear structure detection to highlight ridge structures to refine
+    the segmentation of the guidewire. While developing this procedure, the author also tried some other approaches, which were found to be suboptimal. He tried using Meijering
+    neuriteness, Sato tubeness, Frangi vesselness and Hessian vesselness filters to identify the vessels. He also attempted to use SIFT to identify guidewire features and track
     it across multiple images.
-  </blockquote>
+</blockquote>
 <h3>Segmentation of Tools from Endoscope Images</h3>
-  <p>
-    [2] C. Tomasini, I. Alonso, L. Riazuelo, and A. C. Murillo, “Efficient tool segmentation for endoscopic videos in the wild,” in Proceedings of The 5th 
-    International Conference on Medical Imaging with Deep Learning, E. Konukoglu, B. Menze, A. Venkataraman, C. Baumgartner, Q. Dou, and S. Albarqouni, Eds., 
+<p>
+    [2] C. Tomasini, I. Alonso, L. Riazuelo, and A. C. Murillo, “Efficient tool segmentation for endoscopic videos in the wild,” in Proceedings of The 5th
+    International Conference on Medical Imaging with Deep Learning, E. Konukoglu, B. Menze, A. Venkataraman, C. Baumgartner, Q. Dou, and S. Albarqouni, Eds.,
     in Proceedings of Machine Learning Research, vol. 172. PMLR, Feb. 2022, pp. 1218–1234. [Online]. Available: https://proceedings.mlr.press/v172/tomasini22a.html
-  </p>
-  <blockquote>
-    This paper discusses segmenting tools in endoscope views, which is the first step for pose estimation. The paper mentions several techniques for segmenting endoscope tools, including 
+</p>
+<blockquote>
+    This paper discusses segmenting tools in endoscope views, which is the first step for pose estimation. The paper mentions several techniques for segmenting endoscope tools, including
     UNet and related models, MF-TAPNet, DMNet, MiniNet, and Binary frame classification.
-  </blockquote>
+</blockquote>
 
 <h3>Tracking/Pose Estimation of Tools from Endoscope Images</h3>
-  <p>
-    [3] M. Yoshimura, M. M. Marinho, K. Harada and M. Mitsuishi, "Single-Shot Pose Estimation of Surgical Robot Instruments’ Shafts from Monocular Endoscopic Images," 2020 IEEE International Conference on 
+<p>
+    [3] M. Yoshimura, M. M. Marinho, K. Harada and M. Mitsuishi, "Single-Shot Pose Estimation of Surgical Robot Instruments’ Shafts from Monocular Endoscopic Images," 2020 IEEE International Conference on
     Robotics and Automation (ICRA), Paris, France, 2020, pp. 9960-9966, doi: 10.1109/ICRA40945.2020.9196779
-  </p>
-  <blockquote>
-    This paper was able to estimate pose from a single monocular endoscope image using a modified SSD-6D 
-    network. 
-  </blockquote>
-  <p>
-    [4] Cabras P, Nageotte F, Zanne P, Doignon C. “An adaptive and fully automatic method for estimating 
-    the 3D position of bendable instruments using endoscopic images.” Int J Med Robot. 2017 Dec;13(4). 
+</p>
+<blockquote>
+    This paper was able to estimate pose from a single monocular endoscope image using a modified SSD-6D
+    network.
+</blockquote>
+<p>
+    [4] Cabras P, Nageotte F, Zanne P, Doignon C. “An adaptive and fully automatic method for estimating
+    the 3D position of bendable instruments using endoscopic images.” Int J Med Robot. 2017 Dec;13(4).
     doi: 10.1002/rcs.1812. Epub 2017 Apr 7. PMID: 28387448.
-  </p>
-  <blockquote>
-    This paper also used a monocular camera. The authors leveraged colored markers 
-    attatched to the corners of the instrument. In this paper, the instrument is segmented 
-    using a graph-based method. The corners of markers are 
-    extracted by detecting the color change. The features are used to estimate the 
-    3D pose of the instrument using an adaptive model.  
-  </blockquote>
-  <p>
-    [5] Chiu, Zih-Yun et al. “Real-Time Constrained 6D Object-Pose Tracking of An In-Hand 
-    Suture Needle for Minimally Invasive Robotic Surgery.” 2023 IEEE International Conference 
+</p>
+<blockquote>
+    This paper also used a monocular camera. The authors leveraged colored markers
+    attatched to the corners of the instrument. In this paper, the instrument is segmented
+    using a graph-based method. The corners of markers are
+    extracted by detecting the color change. The features are used to estimate the
+    3D pose of the instrument using an adaptive model.
+</blockquote>
+<p>
+    [5] Chiu, Zih-Yun et al. “Real-Time Constrained 6D Object-Pose Tracking of An In-Hand
+    Suture Needle for Minimally Invasive Robotic Surgery.” 2023 IEEE International Conference
     on Robotics and Automation (ICRA) (2022): 4761-4767.
-  </p>
-  <blockquote>
-    In this paper the authors tract the 6D pose of an in-hand suture needle. The main contibution 
-    of the work is including contraints such that the needle is in a feasible grasping 
-    manifold of the gripper. The authors use a reparameterization by defining the pose of the 
+</p>
+<blockquote>
+    In this paper the authors tract the 6D pose of an in-hand suture needle. The main contibution
+    of the work is including contraints such that the needle is in a feasible grasping
+    manifold of the gripper. The authors use a reparameterization by defining the pose of the
     needle with respect to the end effector frame. This makes it easy to define the grasping constraints.
     A marker-less deep neural network is used for feature detection.
-  </blockquote>
-  <p>
-    [6] R. Hao, O. Özgüner and M. C. Çavuşoğlu, "Vision-Based Surgical Tool Pose Estimation for the da Vinci® Robotic Surgical System," 
+</blockquote>
+<p>
+    [6] R. Hao, O. Özgüner and M. C. Çavuşoğlu, "Vision-Based Surgical Tool Pose Estimation for the da Vinci® Robotic Surgical System,"
     2018 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Madrid, Spain, 2018, pp. 1298-1305, doi: 10.1109/IROS.2018.8594471.
-  </p>
-  <blockquote>
-    The authors are able to identify the location of the tool visually in the camera frame and compare this with the expected view of the tool obtained from robot kinematics. 
-    They are then able to use the difference in location to update their particle filter to perform Bayesian estimation. This paper uses stero cameras rather than a single view, 
+</p>
+<blockquote>
+    The authors are able to identify the location of the tool visually in the camera frame and compare this with the expected view of the tool obtained from robot kinematics.
+    They are then able to use the difference in location to update their particle filter to perform Bayesian estimation. This paper uses stero cameras rather than a single view,
     but the principles of what they are doing should be applicable to a single view as well, but our results might not be as good. Overall, this paper represents
     the "final step" and a stretch goal for our project: actually using the information obtained from images
-    to control robot motion.  
-  </blockquote>
- <p>
+    to control robot motion.
+</blockquote>
+<p>
     [7] Mobarakol Islam, Vibashan VS, Chwee Ming Lim, Hongliang Ren, ST-MTL: Spatio-Temporal multitask learning model to predict scanpath while tracking instruments in robotic surgery,
-Medical Image Analysis, Volume 67, 2021.
-  </p>
-  <blockquote>
+    Medical Image Analysis, Volume 67, 2021.
+</p>
+<blockquote>
     The authors in this work propose an end-to-end trainable Spatio-Temporal Multi-Task Learning (ST-MTL) model for real-time surgical
     instrument segmentation. A novel Asynchronous Spatio-Temporal Optimization (ASTO) to optimize the ST-MTL model is implemented
     for shared-encoder and task-aware decoders.
-  </blockquote>
+</blockquote>
 
 <h2>Methods/Approach</h2>
-<!-- <p>Indicate algorithms, methodologies, or approaches you used to craft your solution. What was the reasoning or intuition for trying each methodology/algorithm. What does the overall pipeline look like and the details behind each component? Make sure to establish any terminology or notation you will continue to use in this section. 
+<!-- <p>Indicate algorithms, methodologies, or approaches you used to craft your solution. What was the reasoning or intuition for trying each methodology/algorithm. What does the overall pipeline look like and the details behind each component? Make sure to establish any terminology or notation you will continue to use in this section.
 ○	Note: Your methods and approaches may change through development, so in your project update, feel free to discuss all approaches you tried out! We expect at least 1 method/approach attempted.
 </p> -->
 
 <h3>Segmentation</h3>
 
-  <h4>Color Based Segmentation</h4>
-  <p>
-    As a first try, this very simple and naiive algorithm was used to segment the 
+<h4>Color Based Segmentation</h4>
+<p>
+    As a first try, this very simple and naiive algorithm was used to segment the
     images. Most tissues inside the body are red in color, leading to our hypothesis
     that selecting all the non-red pixels in an image might be a good first attempt at
     segmentation.
     <br><br>
-    First, a gaussian blur was applied to the image to remove high frequency noise. 
-    Next, the frame was converted into the HSV color space. A mask was created such that 
-    all the non-red pixels were true. Next, morphological operations erosion and dilation were 
-    preformed to remove small speckles in the mask and join together larger non-red regions. 
+    First, a gaussian blur was applied to the image to remove high frequency noise.
+    Next, the frame was converted into the HSV color space. A mask was created such that
+    all the non-red pixels were true. Next, morphological operations erosion and dilation were
+    preformed to remove small speckles in the mask and join together larger non-red regions.
     Then, the area with the largest number of connected "true" pixels was found, and all other
-    "true" areas were discarded. 
-  </p>
+    "true" areas were discarded.
+</p>
 
-  <h4>Blob Detection Based Segmentation Method</h4>
-  <p>
+<h4>Blob Detection Based Segmentation Method</h4>
+<p>
     We also thought that a blob detection algorithm for identifying circle-like regions could
     be used to segment the different pieces of the tooltip.  A difference of Gaussians filter
     was used to approximate the Laplacian of Gaussian and was applied to the RGB image, after
@@ -145,12 +146,12 @@ Medical Image Analysis, Volume 67, 2021.
     difference of Gaussians filter should point to the regions containing the tooltip.  This
     kernel size can be identified by a least squares optimization that minimizes the error for
     the segmentation.
-  </p>
+</p>
 
-  <h4>SIFT based segmentation</h4>
-  <p>
+<h4>SIFT based segmentation</h4>
+<p>
     In this approach, we try to find keypoints in the scene for tool recognition. On the first attempt by finding keypoints using in-built sift function,
-    a large number of keypoints including - the tool tips, nerve regions and bright regions are recognized as key features. In this approach the tool tip is 
+    a large number of keypoints including - the tool tips, nerve regions and bright regions are recognized as key features. In this approach the tool tip is
     segmented in most cases but in the tool shaft region which is black no keypoints are detected.
     Several pre-processing steps are attempted but all of them have drawbacks - initially bluring the image is attempted which leads to finding a relatively
     smaller set of keypoints and give a blurred edge of the tool . By sharpening the image more keypoints are found
@@ -158,207 +159,227 @@ Medical Image Analysis, Volume 67, 2021.
 
     We attempt on using some information from detecting the keypoints for obtaining a good tip detection of the tool while tracking the pose. For segmentation though,
     this approach needs to be combined with another approach to get good results.
-  </p>
+</p>
 
 <h3>Tracking</h3>
 
-  <h4>Color Based Tracking Method</h4>
-  <p>
-    An attempt was made to recover six of the seven tracking values using only traditional CV methods (without learning.) The following algorithms were used to recover each item. 
+<h4>Color Based Tracking Method</h4>
+<p>
+    An attempt was made to recover six of the seven tracking values using only traditional CV methods (without learning.) The following algorithms were used to recover each item.
     <ul>
-      <li>tracked point: The location of the "tracked point" is the point where the dark colored shaft and the light colored 
-        head meet. The image was first segmented to recover the whole tool (see above). The head was then segmented out from the tool. Since the head and shaft are similar colors, 
-        segmentation by color could not be used. Instead, it was noted that the tool head has many more edges than the shaft. Canny edge detection was used to highlight all the edges
-        on the tool. Morphological dilation and erosion of the edges was then performed to create an approximation of the shape of the head. 
-        The head mask was subtracted from the whole tool to obtain the shaft alone. 
-        Then, morphological dilation was used on the shaft mask. Next, a logical AND was applied to find the overlap between the shaft and the head. Finally, the 
-        centroid of this overlap region was found. The centroid became our approximation for the tracked point. </li>
-      <li>shaft axis:  These values represent a cartesian unit vector indicating the orientation of the tool shaft. The image was first segmented to recover 
-        the whole tool. Root mean square was used to find the line that best fit the mask. The vector representing the slope of the best fit line was computed. 
-        In the results section below, the angle difference between the ground truth and computed vector are reported.  </li>
-      <li>head_axis:  These values represent a cartesian unit vector indicating the orientation of the tool head. The image was first segmented to recover 
-        the the head alone. Root mean square was used to find the line that best fit the head mask. The vector representing the slope of the best fit line was computed. 
-        In the results section below, the angle difference between the ground truth and computed vector are reported.</li>
-      <li>clasper_angle: Reconstructing this value was not attempted using this method.</li>
+        <li>
+            tracked point: The location of the "tracked point" is the point where the dark colored shaft and the light colored
+            head meet. The image was first segmented to recover the whole tool (see above). The head was then segmented out from the tool. Since the head and shaft are similar colors,
+            segmentation by color could not be used. Instead, it was noted that the tool head has many more edges than the shaft. Canny edge detection was used to highlight all the edges
+            on the tool. Morphological dilation and erosion of the edges was then performed to create an approximation of the shape of the head.
+            The head mask was subtracted from the whole tool to obtain the shaft alone.
+            Then, morphological dilation was used on the shaft mask. Next, a logical AND was applied to find the overlap between the shaft and the head. Finally, the
+            centroid of this overlap region was found. The centroid became our approximation for the tracked point.
+        </li>
+        <li>
+            shaft axis:  These values represent a cartesian unit vector indicating the orientation of the tool shaft. The image was first segmented to recover
+            the whole tool. Root mean square was used to find the line that best fit the mask. The vector representing the slope of the best fit line was computed.
+            In the results section below, the angle difference between the ground truth and computed vector are reported.
+        </li>
+        <li>
+            head_axis:  These values represent a cartesian unit vector indicating the orientation of the tool head. The image was first segmented to recover
+            the the head alone. Root mean square was used to find the line that best fit the head mask. The vector representing the slope of the best fit line was computed.
+            In the results section below, the angle difference between the ground truth and computed vector are reported.
+        </li>
+        <li>clasper_angle: Reconstructing this value was not attempted using this method.</li>
     </ul>
-  </p>
+</p>
 
-<h4>Cloud's Tracking Method</h4>
-  <p>
-    write here
-  </p>
+<h4>Machine Learning Based Tracking</h4>
+<p>
+    We trained also attempted a learning approach for estimating the tool poses in the frame of the image.  We used a convolutional neural network that inputs the three
+    channel image and outputs the 7 pose values for each tool.  Our network consists of 4 blocks, where each block contains a convolution followed by a 3x3 max pool and a ReLU
+    nonlinear activation.  We used kernels of size 3x10x10, 7x7, 5x3, and 5x5, in that order.  The first convolution was a three dimensional convolution of depth 3 in order to
+    bring the 3-channel image into a 1-channel format without just throwing away the color data by converting to grayscale first, considering the success of segmentation using
+    color so far.  After the convolution, we flattened the data and passed through three fully connected linear layers to bring it down to the 1x14 size that we desired.
+    We also included dropouts of p=0.1 after the colvolutional blocks and of p=0.5 in between the fully connected layers.  The model was trained using an Adam optimizer
+    at a learning rate of 1e-3 with an 8e-4 weight decay with a batch size of 30 and 30 epochs.
+</p>
 
-  <h4>Nidhi's Tracking Method</h4>
-  <p>
+<h4>Nidhi's Tracking Method</h4>
+<p>
     write here
-  </p>
+</p>
 
 <h2>Experiments / Results</h2>
-<!-- <p>Describe what you tried and what datasets were used. We aren’t expecting you to beat state of the art, but we are interested in you describing what worked or didn’t work and to give reasoning as to why you believe so. Compare your approach against baselines (either previously established or you established) in this section. Provide at least one qualitative result (i.e. a visual output of your system on an example image). 
+<!-- <p>Describe what you tried and what datasets were used. We aren’t expecting you to beat state of the art, but we are interested in you describing what worked or didn’t work and to give reasoning as to why you believe so. Compare your approach against baselines (either previously established or you established) in this section. Provide at least one qualitative result (i.e. a visual output of your system on an example image).
 ○	Note: For the project update, feel free to discuss what worked and didn’t work. Why do you think an approach was (un)successful? We expect you to have dealt with dataset setup and completed at least 1 experimental result by the project update.
 </p> -->
 <p>
-  We used the <a href="https://opencas.webarchiv.kit.edu/?q=node/30">EndoVis 15 dataset,</a> which provides endoscope views of robotics tools. 
-  It also provides ground truth data for both tracking and segmentation tasks. 
+    We used the <a href="https://opencas.webarchiv.kit.edu/?q=node/30">EndoVis 15 dataset,</a> which provides endoscope views of robotics tools.
+    It also provides ground truth data for both tracking and segmentation tasks.
 </p>
 
 <h4>Color Based Segmentation</h4>
-  <p>
+<p>
     This algorithm worked suprisingly ok considering how basic it is.
     However, it does have some
-    shortcomings. The threshold for what is considered "red" was chosen manually and may not be 
+    shortcomings. The threshold for what is considered "red" was chosen manually and may not be
     generalizable to other data sets where the lighting is different. In the future, perhaps these
     parameters could be chosen using learning.
     <br>
-    Overall, we acheived an average IoU of 53.8% with this algorithm. 
-  </p>
-  <img src="color_segmentation_example.png" style="width:50%">
-  <br>
-  <img src="color_segmentation_iou.png" style="width:50%">
+    Overall, we acheived an average IoU of 53.8% with this algorithm.
+</p>
+<img src="color_segmentation_example.png" style="width:50%">
+<br>
+<img src="color_segmentation_iou.png" style="width:50%">
 
-  <h4>Blob Detection Based Segmentation Method</h4>
-  <p>
-      The use of the blob detection algorithm for identifying circle-like features in the image frames
-      did not work very well at all. Because of the the large blob size, it was necessary to use a
-      difference of Gaussians instead of the preferred Laplacian of Guassian.  For a broad range of kernel
-      sizes, the peak regions from this filter are spread haphazardly amongst the tooltip, shaft, and tissue, as shown below.
-      Even with using learning to identify an optimal kernel size, the usefulness of this method seems unlikely.
-  </p>
-  <img src="blob_failure_evidence.png" style="width:50%">
+<h4>Blob Detection Based Segmentation Method</h4>
+<p>
+    The use of the blob detection algorithm for identifying circle-like features in the image frames
+    did not work very well at all. Because of the the large blob size, it was necessary to use a
+    difference of Gaussians instead of the preferred Laplacian of Guassian.  For a broad range of kernel
+    sizes, the peak regions from this filter are spread haphazardly amongst the tooltip, shaft, and tissue, as shown below.
+    Even with using learning to identify an optimal kernel size, the usefulness of this method seems unlikely.
+</p>
+<img src="blob_failure_evidence.png" style="width:50%">
 
-  <h4>SIFT for segmentation</h4>
-  <p>
-    This algorithm works well for detecting the tool tip region in some cases but fails to detect the shaft of the tool. Need to combine with another approach for better results for segmentation. For tracking the features are matched well in different frames. 
+<h4>SIFT for segmentation</h4>
+<p>
+    This algorithm works well for detecting the tool tip region in some cases but fails to detect the shaft of the tool. Need to combine with another approach for better results for segmentation. For tracking the features are matched well in different frames.
     We can use optical flow later to detect the features with move withing frames for tracking.
-  </p>
-  <p>
-  Example segmentation results
-  <br>
-  <img src="sift_output.png" style="width:50%">
-  <img src="sift_output2.png" style="width:50%">
-  </p>
-  <p>
+</p>
+<p>
+    Example segmentation results
+    <br>
+    <img src="sift_output.png" style="width:50%">
+    <img src="sift_output2.png" style="width:50%">
+</p>
+<p>
     Keypoint matches - can be further integrated with optical flow for tracking
     <br>
     <img src="keypoints_matched.png" style="width:50%">
-  </p>
+</p>
+
+<h4>Machine Learning Based Segmentation</h4>
+<p>
+
+</p>
 
 <h3>Tracking</h3>
 
-  <h4>Classical Tracking Method</h4>
-  <p>
+<h4>Classical Tracking Method</h4>
+<p>
     The average errors, in pixels, were:
     <ul>
-      <li>tracked point x RMS Error: 217.443041 pixels (30.20% of image width)</li>
-      <li>tracked point y RMS Error: 107.676291 pixels (18.69% of image height)</li>
-      <li>shaft angle RMS Error: 72.999660 degrees</li>
-      <li>head angle RMS Error: 50.790612 degrees</li>
+        <li>tracked point x RMS Error: 217.443041 pixels (30.20% of image width)</li>
+        <li>tracked point y RMS Error: 107.676291 pixels (18.69% of image height)</li>
+        <li>shaft angle RMS Error: 72.999660 degrees</li>
+        <li>head angle RMS Error: 50.790612 degrees</li>
     </ul>
     <br>
-    For comparison, the total size of the images were 720x576 pixels. 
+    For comparison, the total size of the images were 720x576 pixels.
     <br>
-    However, the averages could be pulled high by the frames when the model really was confused, even though it was accurate most of the time. 
+    However, the averages could be pulled high by the frames when the model really was confused, even though it was accurate most of the time.
     So we additionally present the median absolute error:
 
     <ul>
-      <li>tracked point x Median Error: 36.381992 pixels (5.05% of image width)</li>
-      <li>tracked point y Median Error: 40.129398 pixels (6.97% of image height)</li>
-      <li>shaft angle Median Error: 4.996736 degrees</li>
-      <li>head angle Median Error: 14.338042 degrees</li>
+        <li>tracked point x Median Error: 36.381992 pixels (5.05% of image width)</li>
+        <li>tracked point y Median Error: 40.129398 pixels (6.97% of image height)</li>
+        <li>shaft angle Median Error: 4.996736 degrees</li>
+        <li>head angle Median Error: 14.338042 degrees</li>
     </ul>
 
     <br>
     <img src="color_tracking_histograms.png" style="width:50%">
     <br>
-    Finding the grasper angle was not attempted using this method. 
+    Finding the grasper angle was not attempted using this method.
     <br>
-    Overall, this method was somewhat hit or miss. The median error was relatively small - less than 10% of the image height. 
-    However, the mean error was much larger, indicating that sometimes when the model was wrong, it was really wrong. 
+    Overall, this method was somewhat hit or miss. The median error was relatively small - less than 10% of the image height.
+    However, the mean error was much larger, indicating that sometimes when the model was wrong, it was really wrong.
     <br>
-    In the following image, 
+    In the following image,
     <ul>
-      <li>Magenta: Guess for the left tool tracked point</li>
-      <li>Cyan: Ground truth for the left tool tracked point</li>
-      <li>Yellow: Guess for the right tool tracked point</li>
-      <li>White: Ground truth for the right tool tracked point</li>
-      <li>Blue line: Head axis</li>
-      <li>Red line: Shaft axis</li>
+        <li>Magenta: Guess for the left tool tracked point</li>
+        <li>Cyan: Ground truth for the left tool tracked point</li>
+        <li>Yellow: Guess for the right tool tracked point</li>
+        <li>White: Ground truth for the right tool tracked point</li>
+        <li>Blue line: Head axis</li>
+        <li>Red line: Shaft axis</li>
     </ul>
-    
-    
+
+
     <img src="classical_tracking_screenshot.PNG" style="width:50%">
-    
-  </p>
 
-<h4>Cloud's Tracking Method</h4>
-  <p>
-    write here
-  </p>
+</p>
 
-  <h4>Nidhi's Tracking Method</h4>
-  <p>
+<h4>Machine Learning Tracking Approach</h4>
+<p>
+
+</p>
+
+<h4>Nidhi's Tracking Method</h4>
+<p>
     write here
-  </p>
+</p>
 
 <h2>What’s next</h2>
-<!-- <p>What is your plan until the final project due date? What methods and experiments do you plan on running? 
-○	Note: Include a task list (can use a table) indicating each step you are planning and anticipated completion date. 
+<!-- <p>What is your plan until the final project due date? What methods and experiments do you plan on running?
+○	Note: Include a task list (can use a table) indicating each step you are planning and anticipated completion date.
   The next we would try combining classical approaches and learning based medthods. -->
 <p>
-  <li>Combine color segmentation with key features for tracking tool tip -  March 27 - April 2</li>
-  
-  <li>For segmentation 
-    <ul>
-      <li> Setup pytorch environment - March 27 - April 2</li>
-      <li> Try CNN for tool segmentation - April 3 - April 10 </li>
-      <li> Use keypoints for as inputs to training model - April 3 - April 10 </li>  
-      <li> Try endoder-decoder architectures - April 11 - April 18 </li>  
-    </ul> 
+    <li>Combine color segmentation with key features for tracking tool tip -  March 27 - April 2</li>
+
+    <li>
+        For segmentation
+        <ul>
+            <li> Setup pytorch environment - March 27 - April 2</li>
+            <li> Try CNN for tool segmentation - April 3 - April 10 </li>
+            <li> Use keypoints for as inputs to training model - April 3 - April 10 </li>
+            <li> Try endoder-decoder architectures - April 11 - April 18 </li>
+        </ul>
     </li>
- <li>For tracking 
-      <li> Try to implement optical flow for SIFT feature points to detect motion and track the pose of the instrument - April 1 - April 7
-      <li> Try to implement LSTM for spatio temporal patterns of the instrument - April 11 - April 24 
-      <ul> 
-        <li> Use convolutional neural networks to extract visual features. </li>
-        <li> Use color histograms, or sift keypoints as features. </li>
-        <li> Can clip video to shorter frame length and randomly choose input from batch to reduce data size. </li>
-        <li> Output layer should give pose. </li>
-        <li> Use regularization to prevent overfitting. </li>
-      </ul> 
-   </li>
+    <li>For tracking
+    <li> Try to implement optical flow for SIFT feature points to detect motion and track the pose of the instrument - April 1 - April 7
+    <li>
+        Try to implement LSTM for spatio temporal patterns of the instrument - April 11 - April 24
+        <ul>
+            <li> Use convolutional neural networks to extract visual features. </li>
+            <li> Use color histograms, or sift keypoints as features. </li>
+            <li> Can clip video to shorter frame length and randomly choose input from batch to reduce data size. </li>
+            <li> Output layer should give pose. </li>
+            <li> Use regularization to prevent overfitting. </li>
+        </ul>
+    </li>
 </p>
 
 <h2>Team member contributions</h2>
 <!-- <p>
   Indicate what you anticipate each team member will contribute by the final project submission.
-○	Note: List every member name and their corresponding tasks in bullet points – or you may simply assign team member names to the task list you created above. 
+○	Note: List every member name and their corresponding tasks in bullet points – or you may simply assign team member names to the task list you created above.
 </p> -->
 <ul>
-  <li>Christopher Barré
-    <ul>
-      <li>Experiment with blob-detection based segmentation</li>
-      <li>TODO: write utility code for optimizing hyperparameters</li>
-      <li>TODO: experiment with a tracking approach</li>
-      <li>TODO: Experiment with a learning approach</li>
-    </ul>
-  </li>
-  <li>Nidhi Malhotra
-    <ul>
-      <li>Experiment with SIFT for segmentation</li>
-      <li> TODO: Experiment with optical flow of SIFT features for pose estimation</li>
-      <li>TODO: experiment with a tracking approach</li>
-      <li>TODO: Experiment with a learning approach</li>
-    </ul>
-  </li>
-  <li>Amber Rothe
-    <ul>
-      <li>Set up repository</li>
-      <li>Make website template</li>
-      <li>Write utility code for loading data</li>
-      <li>Write the main architecture of the program</li>
-      <li>Write utility code for visualizing results</li>
-      <li>Experiment with color-based segmentation</li>
-      <li>Experiment with the classical tracking approach</li>
-    </ul>
-  </li>
+    <li>
+        Christopher Barré
+        <ul>
+            <li>Experiment with blob-detection based segmentation</li>
+            <li>Experiment with using learning for tracking</li>
+        </ul>
+    </li>
+    <li>
+        Nidhi Malhotra
+        <ul>
+            <li>Experiment with SIFT for segmentation</li>
+            <li> TODO: Experiment with optical flow of SIFT features for pose estimation</li>
+            <li>TODO: experiment with a tracking approach</li>
+            <li>TODO: Experiment with a learning approach</li>
+        </ul>
+    </li>
+    <li>
+        Amber Rothe
+        <ul>
+            <li>Set up repository</li>
+            <li>Make website template</li>
+            <li>Write utility code for loading data</li>
+            <li>Write the main architecture of the program</li>
+            <li>Write utility code for visualizing results</li>
+            <li>Experiment with color-based segmentation</li>
+            <li>Experiment with the classical tracking approach</li>
+        </ul>
+    </li>
 </ul>
