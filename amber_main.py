@@ -135,11 +135,11 @@ def tracking():
 def main():
 
     # Part One: Segmentation
-    #segmentation()
+    segmentation()
 
     # Part 2: Tracking
     # TODO: uncomment this if you want to test tracking
-    tracking()
+    #tracking()
 
 if __name__ == "__main__":
     main()
