@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\model_checkpoints",
+    "\\model_checkpoints\\tracking_net"
   ],
-  "SelectedNode": "\\ML_tracking_model.py",
+  "SelectedNode": "\\main.py",
   "PreviewInSolutionExplorer": false
 }
